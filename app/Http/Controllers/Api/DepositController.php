@@ -26,7 +26,7 @@ class DepositController extends Controller
         try {
             $data = [
                 "price_amount" => $request->price_amount ??  50.0,
-                "price_currency"=> "usd",
+                "price_currency"=> $request->price_currency ??  "usd",
                 "pay_currency" => "usdttrc20",
                 "ipn_callback_url" => $request->callback ?? url('/api/webhooks/nowpayments'),
                 "order_id" =>  Str::uuid(),
