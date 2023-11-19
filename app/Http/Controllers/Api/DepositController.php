@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helper\NowPayment;
+use Illuminate\Support\Str;
 
 class DepositController extends Controller
 {
@@ -27,8 +28,8 @@ class DepositController extends Controller
                 "price_amount" => 50.0,
                 "price_currency"=> "usd",
                 "pay_currency" => "usdttrc20",
-                "ipn_callback_url" => "https://nowpayments.io",
-                "order_id" =>  "RGDBP-21314",
+                "ipn_callback_url" => $request->callback ?? url('/api/webhooks/nowpayments'),
+                "order_id" =>  Str::uuid(),
                 "order_description" => "Apple Macbook Pro 2019 x 1",
                 "is_fixed_rate"=> true,
                 "is_fee_paid_by_user" => false
