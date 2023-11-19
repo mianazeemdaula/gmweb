@@ -11,7 +11,7 @@ class NowPayment{
     public function __construct()
     {
         $this->apikey = env('NOWPAYMENTS_API_KEY');
-        $this->url = env('NOWPAYMENTS_ENV') == "live" ?  env('NOWPAYMENTS_URL') : env('NOWPAYMENTS_SANDBOX_URL');
+        $this->url = env('NOWPAYMENTS_URL');
         $this->client = Http::withHeaders([
             'x-api-key' => $this->apikey,
             'Content-Type' => 'application/json',
