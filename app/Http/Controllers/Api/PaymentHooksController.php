@@ -14,8 +14,8 @@ class PaymentHooksController extends Controller
         $error_msg = "Unknown error";
         $auth_ok = false;
         $request_data = null;
-        Log::info('NowPayments IPN request received');
-        Log::info($request->all());
+        Log::error('NowPayments IPN request received');
+        Log::error($request->all());
         if ($request->header('HTTP_X_NOWPAYMENTS_SIG')) {
             $received_hmac = $request->header('HTTP_X_NOWPAYMENTS_SIG');
             $request_json = $request->getContent();
