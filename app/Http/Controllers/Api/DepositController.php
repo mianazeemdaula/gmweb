@@ -25,12 +25,12 @@ class DepositController extends Controller
     {
         try {
             $data = [
-                "price_amount" => $request->price_amount ??  50.0,
+                "price_amount" => $request->price_amount ??  10.0,
                 "price_currency"=> $request->price_currency ??  "usd",
-                "pay_currency" => "usdttrc20",
+                "pay_currency" => $request->pay_currency ?? "usdttrc20",
                 "ipn_callback_url" => $request->callback ?? url('/api/webhooks/nowpayments'),
-                "order_id" =>  Str::uuid(),
-                "order_description" => "Apple Macbook Pro 2019 x 1",
+                "order_id" =>  $request->tag ?? Str::uuid(),
+                "order_description" => "Deposit to GM",
                 "is_fixed_rate"=> true,
                 "is_fee_paid_by_user" => false
             ];

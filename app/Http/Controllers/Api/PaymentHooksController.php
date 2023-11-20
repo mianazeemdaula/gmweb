@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use App\Models\Deposit;
 
 class PaymentHooksController extends Controller
 {
@@ -15,7 +16,21 @@ class PaymentHooksController extends Controller
         $auth_ok = false;
         $request_data = null;
         Log::error('NowPayments IPN request received');
-        Log::error($request->all());
+        $payment_id = $request->input('payment_id');
+        if($payment_id){
+            $data = (new NowPayment())->getPayment($payment_id);
+            if($data && $data['payment_status'] == 'finished'){
+                $user = User::where('tag', $data['order_id'])->first();
+                if($user){
+                    $deposit = new Deposit();
+                    $deposit->user_id = $user->id;
+                    $deposit->payment_method_id = 1;
+                    $deposit->amount = $data['pay_amount'];
+                    $deposit->transaction_id = $payment_id;
+                    $deposit->save();
+                }
+            }
+        }
         if ($request->header('HTTP_X_NOWPAYMENTS_SIG')) {
             $received_hmac = $request->header('HTTP_X_NOWPAYMENTS_SIG');
             $request_json = $request->getContent();

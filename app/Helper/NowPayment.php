@@ -27,4 +27,9 @@ class NowPayment{
         $response = $this->client->post($this->url.'/payment', $data);
         return $response->json();
     }
+
+    public function getPayment($id){
+        $response = $this->client->get($this->url.'/payment/'.$payment_id);
+        return $response->json();
+    }
 }

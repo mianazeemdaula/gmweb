@@ -67,4 +67,12 @@ class User extends Authenticatable
         return $this->hasMany(Withdrawl::class);
     }
     
+    public function referrals(){
+        return $this->hasMany(User::class, 'referral');
+    }
+    
+
+    public function referrer(){
+        return $this->belongsTo(User::class, 'referral');
+    }
 }

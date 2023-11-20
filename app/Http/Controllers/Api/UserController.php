@@ -17,9 +17,13 @@ class UserController extends Controller
 
     public function updateProfile(Request $request){
         $user = auth()->user();
-        $user->name = $request->name;
+        if($request->has('name')){
+            $user->name = $request->name;
+        }
         if($request->has('image')){
-            $user->image = $request->image->store('users');
+            $file = $request->image;
+            $fileName = $user->id."_".time().'.'.$file->getClientOriginalExtension();
+            $user->image = $file->move(public_path('images'),$fileName);
         }
         $user->save();
         return $this->profile();
