@@ -29,7 +29,7 @@ class NowPayment{
     }
 
     public function getPayment($id){
-        $response = $this->client->get($this->url.'/payment/'.$payment_id);
+        $response = $this->client->get($this->url."/payment/$id");
         return $response->json();
     }
 }
