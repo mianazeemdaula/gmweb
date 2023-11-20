@@ -19,5 +19,12 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        \App\Models\PaymentMethod::create([
+            'name' => 'PayPal',
+            'description' => 'PayPal payment gateway',
+            'logo' => 'paypal.png',
+            'status' => true,
+            'config' => [],
+        ]);
     }
 }

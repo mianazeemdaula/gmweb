@@ -18,7 +18,7 @@ class NowPayment{
         ]);
     }
 
-    public function currencies(){;
+    public function currencies(){
         $response = $this->client->get($this->url.'/currencies?fixed_rate=true');
         return $response->json();
     }
