@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function profile() {
-        $data['user'] = auth()->user();
-        $data['wallet'] = auth()->user()->wallet->balance ?? 0;
-        $data['deposit'] = auth()->user()->deposit->balance ?? 0;
-        $data['withdrawl'] = auth()->user()->withdrawl->balance ?? 0;
+        $user = auth()->user();
+        $data['user'] = $user;
+        $data['wallet'] = $user->wallet->balance ?? 0;
+        $data['deposit'] = $user->deposit->balance ?? 0;
+        $data['withdrawl'] = $user->withdrawl->balance ?? 0;
         return response()->json($data);
     }
 
@@ -23,9 +24,40 @@ class UserController extends Controller
         if($request->has('image')){
             $file = $request->image;
             $fileName = $user->id."_".time().'.'.$file->getClientOriginalExtension();
-            $user->image = $file->move(public_path('images'),$fileName);
+            $file->move(public_path('users'),$fileName);
+            $user->image = $fileName;
         }
         $user->save();
         return $this->profile();
+    }
+
+    public function referrals(){
+        $user = auth()->user();
+        $referrals = $user->referrals()->paginate();
+        return response()->json($referrals);
+    }
+
+    public function referrer(){
+        $user = auth()->user();
+        $referrer = $user->referrer;
+        return response()->json($referrer);
+    }
+
+    public function deposits(){
+        $user = auth()->user();
+        $deposits = $user->deposits()->paginate();
+        return response()->json($deposits);
+    }
+
+    public function withdrawls(){
+        $user = auth()->user();
+        $withdrawls = $user->withdrawls()->paginate();
+        return response()->json($withdrawls);
+    }
+
+    public function transactions(){
+        $user = auth()->user();
+        $transactions = $user->transactions()->paginate();
+        return response()->json($transactions);
     }
 }

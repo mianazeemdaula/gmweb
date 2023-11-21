@@ -4,17 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\PasswordReset;;
 
 class AuthController extends Controller
 {
     public function login(Request $request){
-
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
         $credentials = $request->only(['email', 'password']);
         if(!$token = auth()->attempt($credentials)){
             return response()->json(['message' => 'The email or password not matched'], 422);
         }
+        $user = User::where('email', $request->email)->first();
         $token = $user->createToken('auth')->plainTextToken;
         return response()->json(['token' => $token]);
     }
@@ -23,15 +28,34 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
+            'username' => 'required|unique:users,username',
             'image' => 'required|image',
             'password' => 'required|min:6|confirmed',
+            'phone' => 'required|unique:users,phone',
+            'referrer' => 'nullable|exists:users,tag',
         ]);
+        $image_name = null;
+        if($request->has('image')){
+            $image = $request->file('image');
+            $image_name = time().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('users'), $image_name);
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'image' => $request->image->store('users'),
+            'username' => $request->username,
+            'image' => $image_name ?? 'default.png',
             'password' => bcrypt($request->password),
+            'tag' => Str::random(10),
+            'phone' => $request->phone,
         ]);
+        if($request->has('referrer')){
+            $referrer = User::whereTag($request->referrer)->first();
+            if($referrer){
+                $user->referral = $referrer->id;
+                $user->save();
+            }
+        }
         $token = $user->createToken('auth')->plainTextToken;
         return response()->json(['token' => $token]);
     }

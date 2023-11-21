@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\TransactionTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 
 class User extends Authenticatable
 {
@@ -23,6 +25,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username',
+        'image',
+        'tag',
+        'phone',
     ];
 
     /**
@@ -44,6 +50,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => asset("users/$value"),
+        );
+    }
 
     public function wallet(){
         return $this->hasOne(Wallet::class)->latest();

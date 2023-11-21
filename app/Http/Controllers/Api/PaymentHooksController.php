@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Helper\NowPayment;
 use App\Models\User;
 use App\Models\Deposit;
+use App\Events\DepositEvent;
 
 class PaymentHooksController extends Controller
 {
@@ -28,7 +29,9 @@ class PaymentHooksController extends Controller
                     $deposit->payment_method_id = 1;
                     $deposit->amount = $data['pay_amount'];
                     $deposit->tx_id = $payment_id;
+                    $deposit->status = 'completed';
                     $deposit->save();
+                    DepositEvent::dispatch($deposit->toArray());
                 }
             }
         }
