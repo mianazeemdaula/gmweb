@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('code');
             $table->string('offer_type');
-            $table->float('price', 8, 2);
+            $table->float('price', 8, 5);
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('active')->default(true);

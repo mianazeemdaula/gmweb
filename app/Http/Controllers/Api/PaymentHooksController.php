@@ -27,7 +27,7 @@ class PaymentHooksController extends Controller
                     $deposit->user_id = $user->id;
                     $deposit->payment_method_id = 1;
                     $deposit->amount = $data['pay_amount'];
-                    $deposit->transaction_id = $payment_id;
+                    $deposit->tx_id = $payment_id;
                     $deposit->save();
                 }
             }

@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('logo')->nullable();
             $table->string('description');
-            $table->float('min_price', 8, 2)->unsigned();
-            $table->float('max_price', 8, 2)->unsigned();
-            $table->float('return_percentage', 3, 2)->unsigned();
+            $table->float('min_price', 8, 5)->unsigned();
+            $table->float('max_price', 8, 5)->unsigned();
+            $table->float('return_percentage', 8, 5)->unsigned();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

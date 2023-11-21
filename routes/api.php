@@ -39,6 +39,11 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'payout'
+], function ($router) {
+});
+
+Route::group([
     'prefix' => 'webhooks'
 ], function ($router) {
     Route::post('nowpayments', [App\Http\Controllers\Api\PaymentHooksController::class, 'handleNowPaymentsIPN']);

@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\TransactionTrait;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use TransactionTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -70,7 +72,13 @@ class User extends Authenticatable
     public function referrals(){
         return $this->hasMany(User::class, 'referral');
     }
-    
+
+    public function paidReferrals(){
+        return $this->hasMany(User::class, 'referral')
+        ->whereHas('deposit', function($query){
+            $query->where('status', 'success');
+        });
+    }
 
     public function referrer(){
         return $this->belongsTo(User::class, 'referral');

@@ -32,4 +32,19 @@ class NowPayment{
         $response = $this->client->get($this->url."/payment/$id");
         return $response->json();
     }
+
+    public function getPayments(){
+        $response = $this->client->get($this->url."/payments");
+        return $response->json();
+    }
+
+    public function getBalance(){
+        $response = $this->client->get($this->url."/balance");
+        return $response->json();
+    }
+
+    public function payout($data){
+        $response = $this->client->post($this->url."/payout", $data);
+        return $response->json();
+    }
 }
