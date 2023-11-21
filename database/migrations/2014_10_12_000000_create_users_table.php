@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('locale')->default('en');
             $table->string('timezone')->default('UTC');
-            $table->string('image')->nullable();
+            $table->string('image')->default('default.png');
             $table->string('tag',10)->unique();
             $table->string('status',10)->default('active');
             $table->string('role',10)->default('user');
