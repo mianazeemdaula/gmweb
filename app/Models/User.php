@@ -54,7 +54,7 @@ class User extends Authenticatable
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => asset("users/$value"),
+            get: fn ($value) => asset("users/$value"),
         );
     }
 
