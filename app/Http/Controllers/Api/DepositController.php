@@ -35,7 +35,6 @@ class DepositController extends Controller
             ];
             $payment = (new NowPayment())->payment($data);
             if($payment['payment_status'] == 'success'){
-                return response()->json($payment);
                 return response()->json([
                     'address' => $payment['pay_address'],
                     'amount' => $payment['price_amount'],
