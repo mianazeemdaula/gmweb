@@ -35,7 +35,16 @@ class DepositController extends Controller
                 "is_fee_paid_by_user" => false
             ];
             $payment = (new NowPayment())->payment($data);
-            return response()->json($payment);
+            // return response()->json($payment);
+            return response()->json([
+                'address' => $payment['pay_address'],
+                'amount' => $payment['price_amount'],
+                'amount_to_pay' => $payment['pay_amount'],
+                'expire_at' => $payment['time_limit'],
+                'payment_id' =>  $payment['payment_id'],
+                'currency' => $payment['pay_currency'],
+                'status' => $payment['payment_status'],
+            ]);
         } catch (\Throwable $th) {
             return response()->json($th->getMessage());
         }
