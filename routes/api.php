@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     ], function ($router) {
         Route::get('currencies', [App\Http\Controllers\Api\DepositController::class, 'currencies']);
         Route::post('crypto', [App\Http\Controllers\Api\DepositController::class, 'crypto']);
+        Route::get('status/{id}', [App\Http\Controllers\Api\DepositController::class, 'status']);
     });
 
     // payout routes

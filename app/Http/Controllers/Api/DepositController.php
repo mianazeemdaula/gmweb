@@ -49,5 +49,12 @@ class DepositController extends Controller
         }
     }
 
-    
+    public function status(string $id) {
+        try {
+            $payment = (new NowPayment())->getPayment($id);
+            return response()->json(['status' => $payment['payment_status']]);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage());
+        }   
+    }
 }
