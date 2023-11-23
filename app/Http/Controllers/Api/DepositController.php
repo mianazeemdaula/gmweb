@@ -14,7 +14,6 @@ class DepositController extends Controller
         try {
             $api = new NowPayment();
             $currencies = $api->currencies();
-            return $currencies;
             return response()->json($currencies);
         } catch (\Throwable $th) {
             return response()->json($th->getMessage());
