@@ -11,7 +11,7 @@ class UserController extends Controller
         $user = auth()->user();
         $data['user'] = $user;
         $data['wallet'] = $user->wallet->balance ?? 0;
-        $data['deposit'] = $user->deposit->balance ?? 0;
+        $data['deposit'] = $user->deposits()->sum('amount');
         $data['withdrawl'] = $user->withdrawl->balance ?? 0;
         return response()->json($data);
     }
