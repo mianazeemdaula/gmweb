@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
-use App\Models\PasswordReset;;
+use App\Models\OTP;
 
 class AuthController extends Controller
 {
@@ -30,7 +30,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'username' => 'required|unique:users,username',
             'image' => 'required|image',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6',
             'phone' => 'required|unique:users,phone',
             'referrer' => 'nullable|exists:users,tag',
         ]);
@@ -80,14 +80,13 @@ class AuthController extends Controller
         if(!$user){
             return  response()->json(['message' => 'Email not exists'], 204);
         }
-        $data = PasswordReset::where('email', $request->email)->first();
+        $data = OTP::where('account', $request->email)->first();
         if($data){
-            PasswordReset::where('email', $request->email)->delete();
+            OTP::where('account', $request->email)->delete();
         }
-        PasswordReset::insert([
+        OTP::insert([
             'email' => $request->email,
             'token' => $code,
-            'created_at' => now(),
         ]);
         Mail::to($request->email)->send(new VerifyApiEmail($code));
         return response()->json(['message' => 'Email sent successfully'], 200);
@@ -100,19 +99,19 @@ class AuthController extends Controller
             'password' => 'required',
             'email' => 'required',
         ]);
-        $data = PasswordReset::where('email', $request->email)->first();
+        $data = OTP::where('account', $request->email)->first();
         if($data){
             if ($data->created_at->addMinutes(15) < now()) {
-                PasswordReset::where('email', $request->email)->delete();
-                return response(['message' => trans('passwords.code_is_expire')], 422);
+                OTP::where('account', $request->email)->delete();
+                return response(['message' => 'Password OTP is expired'], 422);
             }
             $user = User::where('email', $request->email)->first();
             $user->password = bcrypt($request->password);
             $user->save();
-            PasswordReset::where('email', $user->email)->delete();
+            OTP::where('account', $user->email)->delete();
             return response()->json(['message'=> 'Password reset successfully'], 200);
         }
-        return response()->json(['message'=> 'email verification not in process'], 409);
+        return response()->json(['message'=> 'Email verification not in process'], 409);
     }
 
 }
