@@ -66,7 +66,7 @@ class UserController extends Controller
 
     public function transactions(){
         $user = auth()->user();
-        $transactions = $user->transactions()->paginate();
+        $transactions = $user->transactions()->latest()->paginate();
         return response()->json($transactions);
     }
 
