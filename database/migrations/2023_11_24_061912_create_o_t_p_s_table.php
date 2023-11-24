@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('o_t_p_s', function (Blueprint $table) {
             $table->id();
-            $table->string('account')->index();
+            $table->unsignedBigInteger('user_id')->index();
+            $table->string('account');
             $table->string('token');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -23,11 +23,12 @@ Route::group([
     Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
 });
 
-Route::group(['middleware' => 'auth:sanctum'], function(){
-
-    
+Route::group(['middleware' => 'auth:sanctum'], function(){    
     // users routes
     Route::group(['prefix' => 'user'], function ($router) {
+        Route::post('send-otp', [App\Http\Controllers\Api\UserController::class, 'sendOTP']);
+        Route::post('verify-otp', [App\Http\Controllers\Api\UserController::class, 'verifyOTP']);
+        Route::get('profile', [App\Http\Controllers\Api\UserController::class, 'profile']);
         Route::get('profile', [App\Http\Controllers\Api\UserController::class, 'profile']);
         Route::post('update', [App\Http\Controllers\Api\UserController::class, 'updateProfile']);
         Route::get('referrals', [App\Http\Controllers\Api\UserController::class, 'referrals']);
