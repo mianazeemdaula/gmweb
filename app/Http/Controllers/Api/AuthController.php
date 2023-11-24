@@ -9,9 +9,6 @@ use App\Models\User;
 use App\Models\OTP;
 use WaAPI\WaAPI\WaAPI;
 
-use Illuminate\Support\Facades\Mail;
-use App\Mail\VerifyApiEmail;
-
 class AuthController extends Controller
 {
     public function login(Request $request){
@@ -33,7 +30,7 @@ class AuthController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'username' => 'required|unique:users,username',
-            'image' => 'required|image',
+            // 'image' => 'required|image',
             'password' => 'required|min:6',
             'phone' => 'required|unique:users,phone',
             'referrer' => 'nullable|exists:users,tag',
@@ -118,81 +115,5 @@ class AuthController extends Controller
         return response()->json(['message'=> 'Email verification not in process'], 409);
     }
 
-    public function sendOTP(Request $request){
-        $request->validate([
-            'action' => 'required|string',
-        ]);
-        $user = $request->user();
-        $action = $request->action;
-        if($user){
-            $code = rand(100000,999999);
-            if($action == 'phone'){
-                $data = OTP::where('account', $user->phone)->first();
-                if($data){
-                    OTP::where('account', $user->phone)->delete();
-                }
-                OTP::insert([
-                    'user_id' => $user->id,
-                    'account' => $user->phone,
-                    'token' => $code,
-                ]);
-                $wa = new WaAPI();
-                $wa->sendMessage($user->phone.'@c.us', 'Your OTP is '.$code);
-                return response()->json(['message'=> 'OTP sent successfully'], 200);
-            }
-            else if($action == 'email'){
-                $data = OTP::where('account', $user->email)->first();
-                if($data){
-                    OTP::where('account', $user->email)->delete();
-                }
-                OTP::insert([
-                    'user_id' => $user->id,
-                    'account' => $user->email,
-                    'token' => $code,
-                ]);
-                Mail::to($user->email)->send(new VerifyApiEmail($code));
-                return response()->json(['message'=> 'OTP sent successfully'], 200);
-            }
-            return response()->json(['message'=> 'OTP sent successfully'], 200);
-        }
-        return response()->json(['message'=> 'Email verification not in process'], 409);
-    }
-
-    public function verifyOTP(Request $request)
-    {
-        $request->validate([
-            'token' => 'required|string|exists:o_t_p_s',
-            'action' => 'required|string',
-        ]);
-        $user = $request->user();
-        $otp = $request->token;
-        $action = $request->action;
-        if($user){
-            if($action == 'phone'){
-                $data = OTP::where('account', $user->phone)->first();
-                if ($data->created_at->addMinutes(1) < now()) {
-                    OTP::where('account', $request->phone)->delete();
-                    return response(['message' => 'Phone OTP is expired'], 422);
-                }
-                $user->phone_verified_at = now();
-                $user->save();
-                OTP::where('account', $user->phone)->delete();
-                return response()->json(['message'=> 'Phone verified successfully'], 200);
-            }
-            else if($action == 'email'){
-                $data = OTP::where('account', $user->email)->first();
-                if ($data->created_at->addMinutes(10) < now()) {
-                    OTP::where('account', $request->email)->delete();
-                    return response(['message' => 'Email OTP is expired'], 422);
-                }
-                $user->email_verified_at = now();
-                $user->save();
-                OTP::where('account', $user->email)->delete();
-                return response()->json(['message'=> 'Email verified successfully'], 200);
-            }
-            return response()->json(['message'=> 'Email verified successfully'], 200);
-        }
-        return response()->json(['message'=> 'Email verification not in process'], 409);
-    }
 
 }
