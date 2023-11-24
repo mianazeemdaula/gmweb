@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $user = \App\Models\User::find(1);
+Route::get('/{id}', function ($id) {
+    $user = \App\Models\User::find($id);
     $invest =  $user->deposits->sum('amount');
     $amount =  ($invest * 0.30) / 100;
     $user->updateWallet($amount, 'ROI');
