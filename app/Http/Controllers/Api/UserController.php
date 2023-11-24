@@ -61,7 +61,7 @@ class UserController extends Controller
 
     public function withdrawls(){
         $user = auth()->user();
-        $withdrawls = $user->withdrawls()->paginate();
+        $withdrawls = $user->withdrawls()->latest()->paginate();
         return response()->json($withdrawls);
     }
 
