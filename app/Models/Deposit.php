@@ -16,4 +16,12 @@ class Deposit extends Model
         'status',
         'tx_id'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function payment_method(){
+        return $this->belongsTo(PaymentMethod::class);
+    }
 }

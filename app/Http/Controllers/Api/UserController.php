@@ -51,7 +51,8 @@ class UserController extends Controller
 
     public function deposits(){
         $user = auth()->user();
-        $deposits = $user->deposits()->paginate();
+        $deposits = $user->deposits()
+        ->with(['payment_method'])->paginate();
         return response()->json($deposits);
     }
 
