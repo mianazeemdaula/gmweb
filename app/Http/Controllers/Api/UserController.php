@@ -81,11 +81,11 @@ class UserController extends Controller
                 if($data){
                     OTP::where('account', $user->phone)->delete();
                 }
-                OTP::insert([
-                    'user_id' => $user->id,
-                    'account' => $user->phone,
-                    'token' => $code,
-                ]);
+                $otp = new OTP();
+                $otp->user_id = $user->id;
+                $otp->account = $user->phone;
+                $otp->token = $code;
+                $otp->save();
                 $wa = new WaAPI();
                 $wa->sendMessage($user->phone.'@c.us', 'Your OTP is '.$code);
                 return response()->json(['message'=> 'OTP sent successfully'], 200);
@@ -95,11 +95,11 @@ class UserController extends Controller
                 if($data){
                     OTP::where('account', $user->email)->delete();
                 }
-                OTP::insert([
-                    'user_id' => $user->id,
-                    'account' => $user->email,
-                    'token' => $code,
-                ]);
+                $otp = new OTP();
+                $otp->user_id = $user->id;
+                $otp->account = $user->email;
+                $otp->token = $code;
+                $otp->save();
                 Mail::to($user->email)->send(new VerifyApiEmail($code));
                 return response()->json(['message'=> 'OTP sent successfully'], 200);
             }
