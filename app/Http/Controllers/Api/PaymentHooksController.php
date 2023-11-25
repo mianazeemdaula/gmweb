@@ -9,6 +9,7 @@ use App\Helper\NowPayment;
 use App\Models\User;
 use App\Models\Deposit;
 use App\Events\DepositEvent;
+use App\Models\Level;
 
 class PaymentHooksController extends Controller
 {
@@ -32,6 +33,12 @@ class PaymentHooksController extends Controller
                     $deposit->status = 'completed';
                     $deposit->save();
                     DepositEvent::dispatch($deposit->toArray());
+                    $amount = $user->deposits()->sum('amount');
+                    $level = Level::where('min_price', '>=', $amount)->first();
+                    if($level){
+                        $user->level_id = $level->id;
+                        $user->save();
+                    }
                 }
             }
         }
