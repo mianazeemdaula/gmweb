@@ -34,7 +34,8 @@ class PaymentHooksController extends Controller
                     $deposit->save();
                     DepositEvent::dispatch($deposit->toArray());
                     $amount = $user->deposits()->sum('amount');
-                    $level = Level::where('min_price', '>=', $amount)->first();
+                    $level = Level::where('min_price', '>=', $amount)
+                    ->where('max_price', '<=', $amount)->first();
                     if($level){
                         $user->level_id = $level->id;
                         $user->save();
