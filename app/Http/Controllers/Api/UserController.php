@@ -16,9 +16,10 @@ class UserController extends Controller
     public function profile() {
         $user = auth()->user();
         $data['user'] = $user;
+        $data['user']['level'] = $user->level->name ?? 'Free';
         $data['wallet'] = $user->wallet->balance ?? 0;
         $data['deposit'] = $user->deposits()->sum('amount');
-        $data['withdrawl'] = $user->withdrawl->balance ?? 0;
+        $data['withdrawl'] = $user->withdrawls()->whereIn('status', ['completed','confirmed'])->sum('amount');
         return response()->json($data);
     }
 

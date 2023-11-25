@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('amount', 8, 5)->unsigned();
             $table->string('status',10)->default('pending');
             $table->string('tx_id',64)->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

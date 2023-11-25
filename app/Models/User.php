@@ -58,6 +58,10 @@ class User extends Authenticatable
         );
     }
 
+    public function level(){
+        return $this->belongsTo(Level::class);
+    }
+
     public function wallet(){
         return $this->hasOne(Wallet::class)->latest();
     }
@@ -89,7 +93,7 @@ class User extends Authenticatable
     public function paidReferrals(){
         return $this->hasMany(User::class, 'referral')
         ->whereHas('deposit', function($query){
-            $query->where('status', 'success');
+            $query->orWhere('status', 'completed');
         });
     }
 

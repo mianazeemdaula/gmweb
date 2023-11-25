@@ -19,6 +19,9 @@ return new class extends Migration
             $table->float('amount', 8, 5)->unsigned();
             $table->string('status')->default('pending');
             $table->string('tx_id')->nullable();
+            $table->string('tx_link')->nullable();
+            $table->string('description')->nullable();
+            $table->string('coin')->default('usdt');
             $table->timestamps();
         });
     }

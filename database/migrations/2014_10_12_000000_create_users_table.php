@@ -28,8 +28,11 @@ return new class extends Migration
             $table->string('role',10)->default('user');
             $table->string('nic',20)->nullable();
             $table->unsignedBigInteger('referral')->nullable();
+            $table->unsignedBigInteger('level_id')->default(1);
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('referral')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
         });
     }
 

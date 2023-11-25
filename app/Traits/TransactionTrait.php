@@ -9,10 +9,10 @@ trait TransactionTrait
 {
     public function updateWallet(float $amount, string $description = null)
     {
-        $transaction =  $this->wallet;
+        $wallet =  $this->wallet;
         $balance = 0;
-        if($transaction){
-            $balance = $transaction->balance;
+        if($wallet){
+            $balance = $wallet->balance;
         }
         $debit = $credit = 0;
         if($amount > 0){
