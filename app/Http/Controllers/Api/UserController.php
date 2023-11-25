@@ -18,6 +18,8 @@ class UserController extends Controller
         $data['user'] = $user;
         $data['level'] = $user->level->name ?? 'Level 0';
         $data['wallet'] = $user->wallet->balance ?? 0;
+        $data['last_day_earning'] = $user->transactions()->whereDate('created_at', now()->subDay())
+        ->where('is_bonus', true)->sum('credit');
         $data['deposit'] = $user->deposits()->sum('amount');
         $data['withdrawl'] = $user->withdrawls()->whereIn('status', ['completed','confirmed'])->sum('amount');
         return response()->json($data);

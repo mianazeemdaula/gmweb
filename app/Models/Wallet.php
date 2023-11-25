@@ -15,5 +15,6 @@ class Wallet extends Model
         'debit',
         'credit',
         'balance',
+        'is_bonus',
     ];
 }

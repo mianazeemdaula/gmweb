@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('debit', 8, 5)->default(0);
             $table->float('credit', 8, 5)->default(0);
             $table->float('balance', 8, 5)->default(0);
+            $table->boolean('is_bonus')->default(false);
             $table->timestamps();
         });
     }

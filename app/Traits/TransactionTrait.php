@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 trait TransactionTrait
 {
-    public function updateWallet(float $amount, string $description = null)
+    public function updateWallet(float $amount, string $description = null, bool $isBonus = false)
     {
         $wallet =  $this->wallet;
         $balance = 0;
@@ -27,6 +27,7 @@ trait TransactionTrait
             'credit' => $credit,
             'balance' =>  $balance,
             'description' => $description,
+            'is_bonus' => $isBonus,
             'user_id' => $this->id,
         ]);
 

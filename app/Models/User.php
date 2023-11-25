@@ -100,4 +100,8 @@ class User extends Authenticatable
     public function referrer(){
         return $this->belongsTo(User::class, 'referral');
     }
+
+    public function offers(){
+        return $this->belongsToMany(Offer::class, 'offer_users')->withPivot(['price'])->withTimestamps();
+    }
 }

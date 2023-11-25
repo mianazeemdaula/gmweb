@@ -31,6 +31,7 @@ class PaymentHooksController extends Controller
                     $deposit->amount = $data['pay_amount'];
                     $deposit->tx_id = $payment_id;
                     $deposit->status = 'completed';
+                    $deposit->description = 'Deposit from Crypto';
                     $deposit->save();
                     DepositEvent::dispatch($deposit->toArray());
                     $amount = $user->deposits()->sum('amount');
