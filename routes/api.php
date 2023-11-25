@@ -55,6 +55,19 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 });
 
 
+
+Route::group([
+    'prefix' => 'app'
+], function ($router) {
+    Route::get('data', [App\Http\Controllers\Api\AppController::class, 'data']);
+    Route::get('levels', [App\Http\Controllers\Api\AppController::class, 'levels']);
+    Route::get('payment-methods', [App\Http\Controllers\Api\AppController::class, 'paymentMethods']);
+    Route::get('faq-categories', [App\Http\Controllers\Api\AppController::class, 'faqCategories']);
+    Route::get('faqs', [App\Http\Controllers\Api\AppController::class, 'faqs']);
+    Route::post('contact-us', [App\Http\Controllers\Api\AppController::class, 'contactUs']);
+    Route::get('offers', [App\Http\Controllers\Api\AppController::class, 'offers']);
+});
+
 Route::group([
     'prefix' => 'webhooks'
 ], function ($router) {

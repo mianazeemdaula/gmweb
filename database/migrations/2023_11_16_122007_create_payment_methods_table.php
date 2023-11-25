@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('code',12)->unique();
             $table->string('description');
             $table->string('logo')->nullable();
-            $table->string('status')->default('active');
+            $table->string('status',10)->default('active');
             $table->json('config')->nullable();
+            $table->string('regex',50)->default("^T[1-9A-HJ-NP-Za-km-z]{33}$");
             $table->timestamps();
         });
     }
