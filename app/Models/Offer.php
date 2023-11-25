@@ -13,6 +13,7 @@ class Offer extends Model
         'name',
         'description',
         'offer_type',
+        'price',
         'reward_price',
         'reward_type',
         'start_date',
@@ -21,6 +22,16 @@ class Offer extends Model
         'qty',
         'qty_sold',
         'image',
+    ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'active' => 'boolean',
+        'qty' => 'integer',
+        'qty_sold' => 'integer',
+        'reward_price' => 'float',
+        'price' => 'float',
     ];
 
     public function users()
