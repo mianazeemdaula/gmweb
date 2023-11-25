@@ -22,6 +22,7 @@ class Offer extends Model
         'qty',
         'qty_sold',
         'image',
+        'sort_index',
     ];
 
     protected $casts = [
@@ -32,6 +33,7 @@ class Offer extends Model
         'qty_sold' => 'integer',
         'reward_price' => 'float',
         'price' => 'float',
+        'sort_index' => 'integer',
     ];
 
     public function users()
