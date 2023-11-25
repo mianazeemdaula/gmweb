@@ -41,6 +41,7 @@ class PaymentHooksController extends Controller
                         $user->level_id = $level->id;
                         $user->save();
                     }
+                    \App\Jobs\CheckOfferWinJob::dispatch($user->id)->delay(now()->addSeconds(10));
                 }
             }
         }
