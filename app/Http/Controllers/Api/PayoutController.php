@@ -65,6 +65,7 @@ class PayoutController extends Controller
             $deposit->status = 'completed';
             $deposit->description = 'Deposit from wallet';
             $deposit->save();
+            $user->updateWallet(-$data['amount'], 'Transfer for investment');
             return response()->json([
                 'message' => 'Transfer request sent successfully'
             ]);
