@@ -47,7 +47,7 @@ class PayoutController extends Controller
                 'message' => 'Insufficient balance'
             ], 422);
         }
-        if($data['to'] == 'user'){
+        if($data['to'] == 'username'){
             $to = \App\Models\User::where('username', $data['username'])->first();
             if(!$to){
                 return response()->json([
@@ -70,6 +70,6 @@ class PayoutController extends Controller
                 'message' => 'Transfer request sent successfully'
             ]);
         }
-        return response()->json(['message' => 'Somthing went wrong',422]);
+        return response()->json(['message' => 'Somthing went wrong'],422);
     }
 }
