@@ -155,7 +155,7 @@ class DatabaseSeeder extends Seeder
             'code' => 'FIRSTDEPOSIT',
             'offer_type' => 'first_deposit',
             'price' => 10,
-            'reward_price' => 20,
+            'reward_price' => 1,
             'reward_type' => 'P',
             'start_date' => now(),
             'end_date' => now()->addDays(30),
