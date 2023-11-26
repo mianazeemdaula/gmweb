@@ -39,7 +39,7 @@ class PayoutController extends Controller
         $data = $request->validate([
             'amount' => 'required|numeric',
             'username' => 'nullable|exists:users,username',
-            'to' => 'required|in:user,invest',
+            'to' => 'required|in:username,invest',
         ]);
         $user = auth()->user();
         if(($user->wallet->balance ?? 0) < $data['amount']){
