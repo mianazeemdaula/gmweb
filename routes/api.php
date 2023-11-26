@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
         'prefix' => 'payout'
     ], function ($router) {
         Route::post('request', [App\Http\Controllers\Api\PayoutController::class, 'payout']);
+        Route::post('transfer', [App\Http\Controllers\Api\PayoutController::class, 'transfer']);
     });
 });
 

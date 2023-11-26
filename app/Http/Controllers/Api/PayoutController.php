@@ -14,16 +14,16 @@ class PayoutController extends Controller
             'address' => 'required|string',
         ]);
         $user = auth()->user();
-        // if(($user->wallet->balance ?? 0) < $data['amount']){
-        //     return response()->json([
-        //         'message' => 'Insufficient balance'
-        //     ], 422);
-        // }
-        // if($user->paidReferrals()->count() < 7){
-        //     return response()->json([
-        //         'message' => 'You need at least 7 referrals to request payout'
-        //     ], 422);
-        // }
+        if(($user->wallet->balance ?? 0) < $data['amount']){
+            return response()->json([
+                'message' => 'Insufficient balance'
+            ], 422);
+        }
+        if($user->paidReferrals()->count() < 7){
+            return response()->json([
+                'message' => 'You need at least 7 referrals to request payout'
+            ], 422);
+        }
         $payout = new Withdrawl();
         $payout->user_id = $user->id;
         $payout->amount = $data['amount'];
@@ -33,5 +33,42 @@ class PayoutController extends Controller
         return response()->json([
             'message' => 'Payout request sent successfully'
         ]);
+    }
+
+    public function transfer(Request $request) {
+        $data = $request->validate([
+            'amount' => 'required|numeric',
+            'username' => 'nullable|exists:users,username',
+            'to' => 'required|in:user,invest',
+        ]);
+        $user = auth()->user();
+        if(($user->wallet->balance ?? 0) < $data['amount']){
+            return response()->json([
+                'message' => 'Insufficient balance'
+            ], 422);
+        }
+        if($data['to'] == 'user'){
+            $to = \App\Models\User::where('username', $data['username'])->first();
+            if(!$to){
+                return response()->json([
+                    'message' => 'User not found'
+                ], 422);
+            }
+            $to->updateWallet($data['amount'], 'Transfer from '.$user->username);
+            $user->updateWallet(-$data['amount'], 'Transfer to '.$to->username);
+        }else if($data['to'] == 'invest'){
+            $deposit = new \App\Models\Deposit();
+            $deposit->user_id = $user->id;
+            $deposit->payment_method_id = 3;
+            $deposit->amount = $data['amount'];
+            $deposit->tx_id = 'transfer';
+            $deposit->status = 'completed';
+            $deposit->description = 'Deposit from wallet';
+            $deposit->save();
+            return response()->json([
+                'message' => 'Transfer request sent successfully'
+            ]);
+        }
+        return response()->json(['message' => 'Somthing went wrong',422]);
     }
 }

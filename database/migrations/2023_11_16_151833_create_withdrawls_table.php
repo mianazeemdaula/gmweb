@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('tx_id')->nullable();
             $table->string('tx_link')->nullable();
             $table->string('description')->nullable();
-            $table->string('coin')->default('usdt');
+            $table->string('coin')->default('usdttrc20');
             $table->timestamps();
         });
     }
