@@ -36,36 +36,36 @@ class PayoutController extends Controller
     }
 
     public function transfer(Request $request) {
-        $data = $request->validate([
+        $request->validate([
             'amount' => 'required|numeric',
             'username' => 'nullable|exists:users,username',
             'to' => 'required|in:username,invest',
         ]);
         $user = auth()->user();
-        if(($user->wallet->balance ?? 0) < $data['amount']){
+        if(($user->wallet->balance ?? 0) < $request->amount){
             return response()->json([
                 'message' => 'Insufficient balance'
             ], 422);
         }
-        if($data['to'] == 'username'){
-            $to = \App\Models\User::where('username', $data['username'])->first();
+        if($request->to == 'username'){
+            $to = \App\Models\User::where('username', $request->username)->first();
             if(!$to){
                 return response()->json([
                     'message' => 'User not found'
                 ], 422);
             }
-            $to->updateWallet($data['amount'], 'Transfer from '.$user->username);
-            $user->updateWallet(-$data['amount'], 'Transfer to '.$to->username);
-        }else if($data['to'] == 'invest'){
+            $to->updateWallet($request->amount, 'Transfer from '.$user->username);
+            $user->updateWallet(-$request->amount, 'Transfer to '.$to->username);
+        }else if($request->to == 'invest'){
             $deposit = new \App\Models\Deposit();
             $deposit->user_id = $user->id;
             $deposit->payment_method_id = 3;
-            $deposit->amount = $data['amount'];
+            $deposit->amount = $request->amount;
             $deposit->tx_id = 'transfer';
             $deposit->status = 'completed';
             $deposit->description = 'Deposit from wallet';
             $deposit->save();
-            $user->updateWallet(-$data['amount'], 'Transfer for investment');
+            $user->updateWallet(-$request->amount, 'Transfer for investment');
             return response()->json([
                 'message' => 'Transfer request sent successfully'
             ]);
