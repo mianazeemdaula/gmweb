@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Level 10',
             'description' => 'Level 10',
             'min_price' => 15001,
-            'max_price' => 100000,
+            'max_price' => 90000,
             'return_percentage' => 1.0,
             'active' => true,
         ]);
