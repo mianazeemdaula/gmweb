@@ -56,6 +56,9 @@ class PayoutController extends Controller
             }
             $to->updateWallet($request->amount, 'Transfer from '.$user->username);
             $user->updateWallet(-$request->amount, 'Transfer to '.$to->username);
+            return response()->json([
+                'message' => 'Transfer to username successfully'
+            ]);
         }else if($request->to == 'invest'){
             $deposit = new \App\Models\Deposit();
             $deposit->user_id = $user->id;
