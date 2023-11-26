@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('description');
-            $table->float('debit', 8, 5)->default(0);
-            $table->float('credit', 8, 5)->default(0);
-            $table->float('balance', 8, 5)->default(0);
+            $table->float('debit', 12, 5)->default(0);
+            $table->float('credit', 12, 5)->default(0);
+            $table->float('balance', 12, 5)->default(0);
             $table->boolean('is_bonus')->default(false);
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('offer_users', function (Blueprint $table) {
             $table->unsignedBigInteger('offer_id');
             $table->unsignedBigInteger('user_id');
-            $table->float('price', 10, 5);
+            $table->float('price', 12, 5);
             $table->primary(['offer_id', 'user_id']);
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

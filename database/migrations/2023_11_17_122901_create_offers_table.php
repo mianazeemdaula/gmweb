@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('code')->unique();
             $table->string('offer_type');
-            $table->float('price', 8, 5);
+            $table->float('price', 12, 5);
             $table->float('reward_price', 10, 5);
             $table->string('reward_type',1)->default('P');
             $table->date('start_date');
