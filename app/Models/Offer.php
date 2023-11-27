@@ -13,7 +13,8 @@ class Offer extends Model
         'name',
         'description',
         'offer_type',
-        'price',
+        'min_price',
+        'max_price',
         'reward_price',
         'reward_type',
         'start_date',
@@ -32,7 +33,8 @@ class Offer extends Model
         'qty' => 'integer',
         'qty_sold' => 'integer',
         'reward_price' => 'float',
-        'price' => 'float',
+        'min_price' => 'float',
+        'max_price' => 'float',
         'sort_index' => 'integer',
     ];
 

@@ -24,6 +24,12 @@ class PayoutController extends Controller
                 'message' => 'You need at least 7 referrals to request payout'
             ], 422);
         }
+        if($request->status == 'pending'){
+            return response()->json([
+                'message' => 'Transfer request may proceed',
+                'status' => 'continue',
+            ]);
+        }
         $payout = new Withdrawl();
         $payout->user_id = $user->id;
         $payout->amount = $data['amount'];
@@ -40,12 +46,19 @@ class PayoutController extends Controller
             'amount' => 'required|numeric',
             'username' => 'nullable|exists:users,username',
             'to' => 'required|in:username,invest',
+            'status' => 'required|in:pending,completed',
         ]);
         $user = auth()->user();
         if(($user->wallet->balance ?? 0) < $request->amount){
             return response()->json([
                 'message' => 'Insufficient balance'
             ], 422);
+        }
+        if($request->status == 'pending'){
+            return response()->json([
+                'message' => 'Transfer request sent successfully',
+                'status' => 'continue',
+            ]);
         }
         if($request->to == 'username'){
             $to = \App\Models\User::where('username', $request->username)->first();
@@ -70,7 +83,7 @@ class PayoutController extends Controller
             $deposit->save();
             $user->updateWallet(-$request->amount, 'Transfer for investment');
             return response()->json([
-                'message' => 'Transfer request sent successfully'
+                'message' => 'Transfer to investment successfully'
             ]);
         }
         return response()->json(['message' => 'Somthing went wrong'],422);

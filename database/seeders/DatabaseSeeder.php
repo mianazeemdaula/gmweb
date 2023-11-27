@@ -137,22 +137,13 @@ class DatabaseSeeder extends Seeder
             'config' => [],
         ]);
 
-        // for ($i=0; $i <5 ; $i++) { 
-        //     \App\Models\Deposit::create([
-        //         'user_id' => 1,
-        //         'payment_method_id' => 1,
-        //         'amount' => rand(10, 100),
-        //         'status' => 'completed',
-        //         'tx_id' => '1234567890',
-        //     ]);
-        // }
-
         \App\Models\Offer::create([
             'name' => 'First Deposit',
             'description' => 'First Deposit',
             'code' => 'FIRSTDEPOSIT',
             'offer_type' => 'first_deposit',
-            'price' => 10,
+            'min_price' => 10,
+            'max_price' => 10000,
             'reward_price' => 1,
             'reward_type' => 'P',
             'start_date' => now(),
