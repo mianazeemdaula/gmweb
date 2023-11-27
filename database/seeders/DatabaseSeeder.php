@@ -137,6 +137,15 @@ class DatabaseSeeder extends Seeder
             'config' => [],
         ]);
 
+        \App\Models\PaymentMethod::create([
+            'name' => 'Deposit',
+            'code' => 'Deposit',
+            'description' => 'USDT',
+            'logo' => 'paypal.png',
+            'status' => 'active',
+            'config' => [],
+        ]);
+
         \App\Models\Offer::create([
             'name' => 'First Deposit',
             'description' => 'First Deposit',

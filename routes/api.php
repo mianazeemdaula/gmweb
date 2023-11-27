@@ -53,6 +53,15 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
         Route::post('request', [App\Http\Controllers\Api\PayoutController::class, 'payout']);
         Route::post('transfer', [App\Http\Controllers\Api\PayoutController::class, 'transfer']);
     });
+
+    // Game routes
+    Route::group([
+        'prefix' => 'game'
+    ], function ($router) {
+        Route::get('bet', [App\Http\Controllers\Api\GameController::class, 'bet']);
+        Route::get('won', [App\Http\Controllers\Api\GameController::class, 'won']);
+        Route::get('history', [App\Http\Controllers\Api\GameController::class, 'history']);
+    });
 });
 
 
