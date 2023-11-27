@@ -30,6 +30,7 @@ class GameController extends Controller
             'amount' => 'required|numeric',
         ]);
         $user = $request->user();
+        $amount = $request->amount;
         $user->updateWallet($amount, 'Win from game');
         return response()->json([
             'message' => 'You won the game',
