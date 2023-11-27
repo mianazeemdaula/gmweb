@@ -58,8 +58,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::group([
         'prefix' => 'game'
     ], function ($router) {
-        Route::get('bet', [App\Http\Controllers\Api\GameController::class, 'bet']);
-        Route::get('won', [App\Http\Controllers\Api\GameController::class, 'won']);
+        Route::post('bet', [App\Http\Controllers\Api\GameController::class, 'bet']);
+        Route::post('won', [App\Http\Controllers\Api\GameController::class, 'won']);
         Route::get('history', [App\Http\Controllers\Api\GameController::class, 'history']);
     });
 });
