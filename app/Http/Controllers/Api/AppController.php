@@ -5,12 +5,47 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Currency;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+
 class AppController extends Controller
 {
+    public function fetch(){
+        $url =  "https://v6.exchangerate-api.com/v6/ace3e1175f6a43afd15d031f/latest/USD";
+        $response = Http::get($url);
+        $data = $response->json();
+        $currencies = $data['conversion_rates'];
+        foreach($currencies as $key => $value){
+            $currency = Currency::where('name',$key)->first();
+            if($currency){
+                $currency->rate = $value;
+                $currency->save();
+            }else{
+                $currency = new Currency();
+                $currency->name = $key;
+                $currency->rate = $value;
+                $currency->save();
+            }
+        }
+        return true;
+    }
     public function data(){
+        $lastRecord = Currency::latest()->first();
+        $now = Carbon::now();
+        if($lastRecord){
+            $lastRecordDate = Carbon::parse($lastRecord->created_at);
+            $diff = $now->diffInMinutes($lastRecordDate);
+            if($diff > 60){
+                $this->fetch();
+            }
+        }else{
+            $this->fetch();
+        }
         $data['app_version'] = '1.0.0';
         $data['app_name'] = 'Crypto MLM';
         $data['app_logo'] = asset('images/logo.png');
+        $data['currencies'] = Currency::whereIn('name',['PKR','USD','AED','ZAR','SAR'])->get();
         $data['app_description'] = 'Crypto MLM is a web application that allows you to manage your mlm business easily.';
         return response()->json($data);
     }

@@ -31,7 +31,7 @@ class GameController extends Controller
         ]);
         $user = $request->user();
         $amount = $request->amount;
-        $user->updateWallet($amount, 'Win from game');
+        $user->updateWallet($amount, 'Game play');
         return response()->json([
             'message' => 'You won the game',
             'data' => [
