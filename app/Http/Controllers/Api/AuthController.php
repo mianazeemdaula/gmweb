@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\OTP;
 use WaAPI\WaAPI\WaAPI;
+use App\Mail\VerifyApiEmail;
+use App\Mail\ResetPasswordMail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -61,13 +64,6 @@ class AuthController extends Controller
         return response()->json(['token' => $token]);
     }
 
-    public function resetPassword(Request $request){
-        $credentials = $request->only(['email']);
-        if(!$token = auth()->attempt($credentials)){
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-        return response()->json(['token' => $token]);
-    }
 
     public function logout(){
         auth()->logout();
@@ -76,27 +72,31 @@ class AuthController extends Controller
 
     public function sendResetPasswordPin(Request $request)
     {
-        $code = rand(100000,999999);
+        $request->validate([
+            'email' => 'required|email',
+        ]);
         $user =  User::where('email', $request->email)->first();
         if(!$user){
-            return  response()->json(['message' => 'Email not exists'], 204);
+            return  response()->json(['message' => 'Email not exists'], 244);
         }
+        $code = rand(100000,999999);
         $data = OTP::where('account', $request->email)->first();
         if($data){
             OTP::where('account', $request->email)->delete();
         }
-        OTP::insert([
-            'email' => $request->email,
-            'token' => $code,
-        ]);
-        Mail::to($request->email)->send(new VerifyApiEmail($code));
+        $otp = new OTP();
+        $otp->account = $request->email;
+        $otp->token = $code;
+        $otp->user_id = $user->id;
+        $otp->save();
+        Mail::to($request->email)->send(new ResetPasswordMail($code));
         return response()->json(['message' => 'Email sent successfully'], 200);
     }
 
     public function changePassword(Request $request)
     {
         $request->validate([
-            'token' => 'required|string|exists:password_resets',
+            'token' => 'required|numeric|min:100000|max:999999',
             'password' => 'required',
             'email' => 'required',
         ]);

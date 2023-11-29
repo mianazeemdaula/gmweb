@@ -19,7 +19,8 @@ Route::group([
 ], function ($router) {
     Route::post('login', [App\Http\Controllers\Api\AuthController::class, 'login']);
     Route::post('register', [App\Http\Controllers\Api\AuthController::class, 'register']);
-    Route::post('reset-password', [App\Http\Controllers\Api\AuthController::class, 'resetPassword']);
+    Route::post('forget-password', [App\Http\Controllers\Api\AuthController::class, 'sendResetPasswordPin']);
+    Route::post('reset-password', [App\Http\Controllers\Api\AuthController::class, 'changePassword']);
     Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
 });
 
