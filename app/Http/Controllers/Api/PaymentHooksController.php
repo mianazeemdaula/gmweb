@@ -33,7 +33,7 @@ class PaymentHooksController extends Controller
                     $deposit->status = 'completed';
                     $deposit->description = 'Deposit from Crypto';
                     $deposit->save();
-                    DepositEvent::dispatch($deposit->toArray());
+                    // DepositEvent::dispatch($deposit->toArray());
                     $amount = $user->deposits()->sum('amount');
                     $level = Level::where('min_price', '<=', $amount)
                     ->where('max_price', '>=', $amount)->first();
