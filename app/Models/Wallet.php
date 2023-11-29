@@ -17,4 +17,11 @@ class Wallet extends Model
         'balance',
         'is_bonus',
     ];
+
+    protected $casts = [
+        'debit' => 'float',
+        'credit' => 'float',
+        'balance' => 'float',
+        'is_bonus' => 'boolean',
+    ];
 }
