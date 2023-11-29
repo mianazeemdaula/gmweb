@@ -10,6 +10,7 @@ use App\Models\OTP;
 use WaAPI\WaAPI\WaAPI;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyApiEmail;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -18,8 +19,8 @@ class UserController extends Controller
         $data['user'] = $user;
         $data['level'] = $user->level->name ?? 'Level 0';
         $data['wallet'] = $user->wallet->balance ?? 0;
-        $data['earning'] = $user->wallet()->where('is_bonus',true)->sum('credit');
-        $data['last_day_earning'] = $user->transactions()->whereDate('created_at', now())
+        $data['earning'] = $user->transactions()->where('is_bonus',true)->sum('credit');
+        $data['last_day_earning'] = $user->transactions()->whereDate('created_at', Carbon::today())
         ->where('is_bonus', true)->sum('credit');
         $data['deposit'] = $user->deposits()->sum('amount');
         $data['withdrawl'] = $user->withdrawls()->whereIn('status', ['completed','confirmed'])->sum('amount');
