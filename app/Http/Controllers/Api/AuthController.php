@@ -77,7 +77,7 @@ class AuthController extends Controller
         ]);
         $user =  User::where('email', $request->email)->first();
         if(!$user){
-            return  response()->json(['message' => 'Email not exists'], 244);
+            return  response()->json(['message' => 'Email not exists'], 422);
         }
         $code = rand(100000,999999);
         $data = OTP::where('account', $request->email)->first();
