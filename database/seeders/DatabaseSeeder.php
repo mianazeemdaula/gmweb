@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Level 6',
             'description' => 'Level 6',
             'min_price' => 1001,
-            'max_price' => 30000,
+            'max_price' => 3000,
             'return_percentage' => 0.5,
             'active' => true,
         ]);
@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Level 7',
             'description' => 'Level 7',
             'min_price' => 3001,
-            'max_price' => 80000,
+            'max_price' => 8000,
             'return_percentage' => 0.6,
             'active' => true,
         ]);
@@ -106,10 +106,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory(10)->create();
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         \App\Models\PaymentMethod::create([
             'name' => 'USDT Tron',
             'code' => 'USDTTRC20',

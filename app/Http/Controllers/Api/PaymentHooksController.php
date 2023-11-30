@@ -27,7 +27,7 @@ class PaymentHooksController extends Controller
                 if($user){
                     $deposit = new Deposit();
                     $deposit->user_id = $user->id;
-                    $deposit->payment_method_id = 1;
+                    $deposit->payment_method_id = strtolower($data['outcome_currency']) == 'usdttrc20' ? 1 : 2;
                     $deposit->amount = $data['pay_amount'];
                     $deposit->tx_id = $payment_id;
                     $deposit->status = 'completed';
@@ -41,7 +41,7 @@ class PaymentHooksController extends Controller
                         $user->level_id = $level->id;
                         $user->save();
                     }
-                    \App\Jobs\CheckOfferWinJob::dispatch($user->id)->delay(now()->addSeconds(10));
+                    \App\Jobs\CheckOfferWinJob::dispatch($user->id);
                 }
             }
         }

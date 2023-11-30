@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:daily-bonus-process')->dailyAt('19:15');
+        $schedule->command('app:daily-bonus-process')->dailyAt('12:15');
+        $schedule->command('queue:work --tries=3 --stop-when-empty')->everyMinute()->withoutOverlapping();
     }
 
     /**
