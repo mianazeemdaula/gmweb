@@ -17,3 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/test/{id}', function($id){
+    $user = \App\Models\User::find($id);
+    $percent =  ($user->level->return_percentage * $user->deposits()->sum('amount')) / 100;
+    return [
+        'level' => $user->level,
+        'deposit' => $user->deposits()->sum('amount'),
+        'percent' => $percent,];
+});
