@@ -52,6 +52,7 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
             'tag' => Str::random(10),
             'phone' => $request->phone,
+            'phone_verified_at' => now(),
         ]);
         if($request->has('referrer')){
             $referrer = User::whereTag($request->referrer)->first();

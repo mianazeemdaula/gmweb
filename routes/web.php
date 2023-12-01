@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use WaAPI\WaAPI\WaAPI;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,6 +27,10 @@ Route::middleware(['auth'])->group(function(){
 });
 
 Route::get('/test/{id}', function($id){
+    $wa = new WaAPI();
+   return $wa->sendMessage('923004103160@c.us', 'Your OTP is ');
+    
+    $waapi->sendTextMessage('923004103160', 'Hello World');
     $user = \App\Models\User::find($id);
     $users = \App\Models\User::whereHas('deposit', function ($q) {
         $q->where('status', 'completed');
