@@ -47,8 +47,8 @@ class PaymentHooksController extends Controller
                 }
             }
         }
-        if ($request->header('HTTP_X_NOWPAYMENTS_SIG')) {
-            $received_hmac = $request->header('HTTP_X_NOWPAYMENTS_SIG');
+        if ($request->header('x-nowpayments-sig')) {
+            $received_hmac = $request->header('x-nowpayments-sig');
             $request_json = $request->getContent();
             $request_data = json_decode($request_json, true);
             ksort($request_data); 
