@@ -35,7 +35,6 @@ class DepositController extends Controller
                 "is_fee_paid_by_user" => false
             ];
             $payment = (new NowPayment())->payment($data);
-            Log::info($payment);
             if(isset($payment['payment_id'])){
                 return response()->json([
                     'address' => $payment['pay_address'],

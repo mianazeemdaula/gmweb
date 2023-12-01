@@ -18,7 +18,6 @@ class PaymentHooksController extends Controller
         $error_msg = "Unknown error";
         $auth_ok = false;
         $request_data = null;
-        Log::error('NowPayments IPN request received');
         if ($request->header('x-nowpayments-sig')) {
             $received_hmac = $request->header('x-nowpayments-sig');
             $request_json = $request->getContent();
@@ -40,7 +39,6 @@ class PaymentHooksController extends Controller
         }
 
         if ($auth_ok) {
-            Log::info('NowPayments IPN request received and auth ok');
             $payment_id = $request->input('payment_id');
             if($payment_id){
                 $data = (new NowPayment())->getPayment($payment_id);
