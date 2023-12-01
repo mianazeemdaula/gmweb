@@ -47,7 +47,7 @@ class PaymentHooksController extends Controller
                     if($user){
                         $deposit = new Deposit();
                         $deposit->user_id = $user->id;
-                        $deposit->payment_method_id = strtolower($data['outcome_currency']) == 'usdttrc20' ? 1 : 2;
+                        $deposit->payment_method_id = strtolower($data['pay_currency']) == 'usdttrc20' ? 1 : 2;
                         $deposit->amount = $data['pay_amount'];
                         $deposit->tx_id = $payment_id;
                         $deposit->status = 'completed';
