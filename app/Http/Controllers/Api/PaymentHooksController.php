@@ -15,6 +15,8 @@ class PaymentHooksController extends Controller
 {
     public function handleNowPaymentsIPN(Request $request)
     {
+        Log::info('NowPayments IPN request received');
+        Log::info($request->all());
         $error_msg = "Unknown error";
         $auth_ok = false;
         $request_data = null;
