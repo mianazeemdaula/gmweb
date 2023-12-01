@@ -40,7 +40,7 @@ class DepositController extends Controller
                     'address' => $payment['pay_address'],
                     'amount' => $payment['price_amount'],
                     'amount_to_pay' => $payment['pay_amount'],
-                    'expire_at' => $payment['valid_until'] ?? $payment['expiration_estimate_date'],
+                    'expire_at' => $payment['expiration_estimate_date'] ?? $payment['valid_until'],
                     'payment_id' =>  $payment['payment_id'],
                     'currency' => $payment['pay_currency'],
                     'status' => $payment['payment_status'],
