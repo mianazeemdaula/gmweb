@@ -105,23 +105,28 @@ class DatabaseSeeder extends Seeder
             'return_percentage' => 1.0,
             'active' => true,
         ]);
-        \App\Models\User::factory(1)->create();
-        \App\Models\User::factory(7)->state([
-            'referral' => 1,
+        \App\Models\User::factory(1)->state([
+            'email' => 'admin@goldminner.gold',
+            'tag' => 'admin',
+            'phone_verified_at' => now(),
+            'phone' => '1234567890',
         ])->create();
-        for ($i=1; $i <= 7; $i++) {
-            \App\Models\User::factory(7)->state([
-                'referral' => $i + 1,
-            ])->create();
-        }
-        $users = \App\Models\User::where('id','>',8)->get();
-        foreach($users as $user){
-            \App\Models\User::factory(7)->state([
-                'referral' => $user->id,
-            ])->create();
-        }
+        // \App\Models\User::factory(7)->state([
+        //     'referral' => 1,
+        // ])->create();
+        // for ($i=1; $i <= 7; $i++) {
+        //     \App\Models\User::factory(7)->state([
+        //         'referral' => $i + 1,
+        //     ])->create();
+        // }
+        // $users = \App\Models\User::where('id','>',8)->get();
+        // foreach($users as $user){
+        //     \App\Models\User::factory(7)->state([
+        //         'referral' => $user->id,
+        //     ])->create();
+        // }
 
-        \App\Models\User::query()->update(['level_id' => 2]);
+        // \App\Models\User::query()->update(['level_id' => 2]);
 
         \App\Models\PaymentMethod::create([
             'name' => 'USDT Tron',
@@ -175,16 +180,16 @@ class DatabaseSeeder extends Seeder
             'qty_sold' => 0,
             'image' => 'first_deposit.png',
         ]);
-        $userCount = \App\Models\User::count();
-        for ($i=1; $i <= $userCount; $i++) { 
-            $deposit = new \App\Models\Deposit();
-            $deposit->user_id = $i;
-            $deposit->payment_method_id = 1;
-            $deposit->amount = 10;
-            $deposit->tx_id = Str::random(10);
-            $deposit->status = 'completed';
-            $deposit->description = 'Deposit from Crypto';
-            $deposit->save();
-        }
+        // $userCount = \App\Models\User::count();
+        // for ($i=1; $i <= $userCount; $i++) { 
+        //     $deposit = new \App\Models\Deposit();
+        //     $deposit->user_id = $i;
+        //     $deposit->payment_method_id = 1;
+        //     $deposit->amount = 10;
+        //     $deposit->tx_id = Str::random(10);
+        //     $deposit->status = 'completed';
+        //     $deposit->description = 'Deposit from Crypto';
+        //     $deposit->save();
+        // }
     }
 }
