@@ -19,34 +19,6 @@ class PaymentHooksController extends Controller
         $auth_ok = false;
         $request_data = null;
         Log::error('NowPayments IPN request received');
-        Log::error($request->all());
-        Log::error($request->headers->all());
-        $payment_id = $request->input('payment_id');
-        if($payment_id){
-            $data = (new NowPayment())->getPayment($payment_id);
-            if($data && $data['payment_status'] == 'finished'){
-                $user = User::where('tag', $data['order_id'])->first();
-                if($user){
-                    $deposit = new Deposit();
-                    $deposit->user_id = $user->id;
-                    $deposit->payment_method_id = strtolower($data['outcome_currency']) == 'usdttrc20' ? 1 : 2;
-                    $deposit->amount = $data['pay_amount'];
-                    $deposit->tx_id = $payment_id;
-                    $deposit->status = 'completed';
-                    $deposit->description = 'Deposit from Crypto';
-                    $deposit->save();
-                    // DepositEvent::dispatch($deposit->toArray());
-                    $amount = $user->deposits()->sum('amount');
-                    $level = Level::where('min_price', '<=', $amount)
-                    ->where('max_price', '>=', $amount)->first();
-                    if($level){
-                        $user->level_id = $level->id;
-                        $user->save();
-                    }
-                    \App\Jobs\CheckOfferWinJob::dispatch($user->id);
-                }
-            }
-        }
         if ($request->header('x-nowpayments-sig')) {
             $received_hmac = $request->header('x-nowpayments-sig');
             $request_json = $request->getContent();
@@ -68,9 +40,34 @@ class PaymentHooksController extends Controller
         }
 
         if ($auth_ok) {
-            return response()->json($request->all());
+            Log::info('NowPayments IPN request received and auth ok');
+            $payment_id = $request->input('payment_id');
+            if($payment_id){
+                $data = (new NowPayment())->getPayment($payment_id);
+                if($data && $data['payment_status'] == 'finished'){
+                    $user = User::where('tag', $data['order_id'])->first();
+                    if($user){
+                        $deposit = new Deposit();
+                        $deposit->user_id = $user->id;
+                        $deposit->payment_method_id = strtolower($data['outcome_currency']) == 'usdttrc20' ? 1 : 2;
+                        $deposit->amount = $data['pay_amount'];
+                        $deposit->tx_id = $payment_id;
+                        $deposit->status = 'completed';
+                        $deposit->description = 'Deposit from Crypto';
+                        $deposit->save();
+                        // DepositEvent::dispatch($deposit->toArray());
+                        $amount = $user->deposits()->sum('amount');
+                        $level = Level::where('min_price', '<=', $amount)
+                        ->where('max_price', '>=', $amount)->first();
+                        if($level){
+                            $user->level_id = $level->id;
+                            $user->save();
+                        }
+                        \App\Jobs\CheckOfferWinJob::dispatch($user->id);
+                    }
+                }
+            }
         } else {
-
             Log::error($error_msg);
             return response()->json(['error' => $error_msg], 400);
         }
