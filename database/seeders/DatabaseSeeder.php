@@ -178,7 +178,7 @@ class DatabaseSeeder extends Seeder
             'active' => true,
             'qty' => 100,
             'qty_sold' => 0,
-            'image' => 'first_deposit.png',
+            'image' => 'first_deposit.jpg',
         ]);
         // $userCount = \App\Models\User::count();
         // for ($i=1; $i <= $userCount; $i++) { 

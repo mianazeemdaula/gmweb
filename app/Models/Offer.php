@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Offer extends Model
 {
@@ -37,6 +38,13 @@ class Offer extends Model
         'max_price' => 'float',
         'sort_index' => 'integer',
     ];
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => asset("offers/$value"),
+        );
+    }
 
     public function users()
     {
