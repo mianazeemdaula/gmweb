@@ -18,11 +18,21 @@ Route::get('/', function () {
 });
 
 
+Route::get('login', [\App\Http\Controllers\WebController::class, 'login']);
+Route::post('login', [\App\Http\Controllers\WebController::class, 'doLogin'])->name('login');
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('dashboard', [\App\Http\Controllers\WebController::class, 'dashboard'])->name('dashboard');
+    Route::post('logout', [\App\Http\Controllers\WebController::class, 'logout'])->name('logout');
+});
+
 Route::get('/test/{id}', function($id){
     $user = \App\Models\User::find($id);
-    $percent =  ($user->level->return_percentage * $user->deposits()->sum('amount')) / 100;
-    return [
-        'level' => $user->level,
-        'deposit' => $user->deposits()->sum('amount'),
-        'percent' => $percent,];
+    $users = \App\Models\User::whereHas('deposit', function ($q) {
+        $q->where('status', 'completed');
+    })->get();
+    $dailyCredit = \App\Models\Wallet::where('is_bonus', true)->sum('credit');
+    $deposit = \App\Models\Deposit::where('status', 'completed')->sum('amount');
+    return ['credit' => $dailyCredit, 'deposit' => $deposit, 'days' => $deposit / $dailyCredit];
+    return $users->count();
 });

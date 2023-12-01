@@ -19,6 +19,8 @@ class PaymentHooksController extends Controller
         $auth_ok = false;
         $request_data = null;
         Log::error('NowPayments IPN request received');
+        Log::error($request->all());
+        Log::error($request->headers->all());
         $payment_id = $request->input('payment_id');
         if($payment_id){
             $data = (new NowPayment())->getPayment($payment_id);

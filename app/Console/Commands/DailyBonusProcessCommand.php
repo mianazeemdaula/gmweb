@@ -31,7 +31,7 @@ class DailyBonusProcessCommand extends Command
         $seconds = 0;
         foreach ($users as $user) {
             \App\Jobs\DailyBonusProcessJob::dispatch($user)->delay(now()->addSeconds($seconds));
-            $seconds += 30;
+            $seconds += 2;
         }  
     }
 }

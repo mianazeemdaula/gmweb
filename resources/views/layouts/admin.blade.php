@@ -24,7 +24,7 @@
     <header class="header">
         <div class="container">
             <div class="flex flex-wrap h-16 items-center justify-between w-full bg-white">
-                <img src="{{ asset('/images/logo/original.png') }}" alt="" class="w-40">
+                <img src="{{ asset('/images/logo.jpg') }}" alt="" class="w-12">
                 <div class="flex items-center space-x-4">
                     <a href='' class="relative">
                         <i class="bi bi-bell"></i>
@@ -32,12 +32,12 @@
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
                             <span
                                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75">
-                                <img src="{{ asset('/images/.png') }}" alt="" class="w-8">
+                                <img src="{{ asset('/images/logo.jpg') }}" alt="" class="w-8">
                             </span>
                         </div>
                     </a>
                     <div
-                        class="flex justify-center items-center w-8 h-8 rounded-full ring-1 ring-sky-500 ring-offset-2">
+                        class="flex justify-center items-center w-8 h-8 rounded-full ring-1 ring-green-500 ring-offset-2">
                         <!-- <img src="{{ asset('/images/all-img/team/team-2.png') }}" alt="" class="w-6"> -->
                         <i class="bi-person"></i>
                     </div>
@@ -52,10 +52,11 @@
     </header>
 
     <aside aria-label="Sidebar" id='sidebar' class="sidebar">
-        <div class="absolute top-2 right-2 hover:cursor-pointer md:hidden text-slate-800" onclick="toggleSidebar()"><i
-                class="bi bi-x text-[32px]"></i></div>
+        <div class="absolute top-2 right-2 hover:cursor-pointer md:hidden text-slate-800" onclick="toggleSidebar()">
+            <i class="bi bi-x text-[32px]"></i>
+        </div>
         <div class="flex justify-center items-center bg-green-50 py-12 md:hidden">
-            <img src="{{ asset('/images/logo/black.png') }}" alt="" class="w-40">
+            <img src="{{ asset('/images/logo.jpg') }}" alt="" class="w-40">
         </div>
         <div class="mt-12 px-8">
             <ul class="flex flex-col items-start space-y-4">
@@ -65,11 +66,14 @@
                 </li>
                 <li @if ($page == 'invoices') class="active" @endif>
                     <i class="bi-receipt"></i>
-                    <a href="{{ route('user.invoices.index') }}">Payments</a>
+                    <a href="{{ url('user.invoices.index') }}">Payments</a>
                 </li>
                 <li>
                     <i class="bi-power"></i>
-                    <a href="{{ url('signout') }}">Signout</a>
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button type="submit">Logout</button>
+                    </form>
                 </li>
 
             </ul>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helper\NowPayment;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class DepositController extends Controller
 {
@@ -34,6 +35,7 @@ class DepositController extends Controller
                 "is_fee_paid_by_user" => false
             ];
             $payment = (new NowPayment())->payment($data);
+            Log::info($payment);
             if(isset($payment['payment_id'])){
                 return response()->json([
                     'address' => $payment['pay_address'],
