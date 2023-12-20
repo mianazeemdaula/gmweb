@@ -34,7 +34,7 @@ class WebController extends Controller
         return view('web.dashboard', [
             'deposit' => $deposit,
             'dailyCredit' => $dailyCredit,
-            'days' => $deposit / $dailyCredit,
+            'days' => $deposit / ($dailyCredit == 0 ? 1 : $dailyCredit),
             'userCount' => $userCount,
             'userDepositCount' => $userDepositCount,
         ]);
