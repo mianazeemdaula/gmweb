@@ -25,7 +25,19 @@ class WebController extends Controller
 
     public function dashboard()
     {
-        return view('web.dashboard');
+        $deposit = \App\Models\Deposit::where('status', 'completed')->sum('amount');
+        $dailyCredit = \App\Models\Wallet::where('is_bonus', true)->sum('credit');
+        $userCount = \App\Models\User::count();
+        $userDepositCount = \App\Models\User::whereHas('deposit', function ($q) {
+            $q->where('status', 'completed');
+        })->count();
+        return view('web.dashboard', [
+            'deposit' => $deposit,
+            'dailyCredit' => $dailyCredit,
+            'days' => $deposit / $dailyCredit,
+            'userCount' => $userCount,
+            'userDepositCount' => $userDepositCount,
+        ]);
     }
 
     public function logout()
