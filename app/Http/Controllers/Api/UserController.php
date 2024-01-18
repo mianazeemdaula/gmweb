@@ -38,6 +38,9 @@ class UserController extends Controller
             $file->move(public_path('users'),$fileName);
             $user->image = $fileName;
         }
+        if($request->has('start_mining')){
+            $user->mining_started_at = now();
+        }
         $user->save();
         return $this->profile();
     }
