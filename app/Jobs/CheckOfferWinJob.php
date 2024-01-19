@@ -38,7 +38,7 @@ class CheckOfferWinJob implements ShouldQueue
                 $firstDepositOffers =  $user->offers()->where('offer_type', 'first_deposit')->count();
                 if($firstDepositOffers == 0){
                     $deposit = $user->deposits()->where('status', 'completed')->first();
-                    if($deposit && $deposit->amount >= $offer->min_price){
+                    if($deposit && $deposit->amount <= $offer->max_price){
                         $amount = 0;
                         $amount = ($deposit->amount * $offer->reward_price) / 100;
                         $user->offers()->attach($offer->id, ['price' => $amount]);

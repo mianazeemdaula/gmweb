@@ -44,7 +44,8 @@ class PaymentHooksController extends Controller
             $payment_id = $request->input('payment_id');
             if($payment_id){
                 $data = (new NowPayment())->getPayment($payment_id);
-                if($data && ($data['payment_status'] == 'finished' || $data['payment_status'] == 'partially_paid')){
+                $txDeposit =  Deposit::where('tx_id', $payment_id)->first();
+                if($data && !$txDeposit && ($data['payment_status'] == 'finished' || $data['payment_status'] == 'partially_paid')){
                     $user = User::where('tag', $data['order_id'])->first();
                     if($user){
                         $deposit = new Deposit();
