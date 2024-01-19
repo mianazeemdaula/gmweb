@@ -44,13 +44,13 @@ class PaymentHooksController extends Controller
             $payment_id = $request->input('payment_id');
             if($payment_id){
                 $data = (new NowPayment())->getPayment($payment_id);
-                if($data && $data['payment_status'] == 'finished'){
+                if($data && ($data['payment_status'] == 'finished' || $data['payment_status'] == 'partially_paid')){
                     $user = User::where('tag', $data['order_id'])->first();
                     if($user){
                         $deposit = new Deposit();
                         $deposit->user_id = $user->id;
                         $deposit->payment_method_id = strtolower($data['pay_currency']) == 'usdttrc20' ? 1 : 2;
-                        $deposit->amount = $data['pay_amount'];
+                        $deposit->amount = $data['actually_paid'] ??  $data['pay_amount'];
                         $deposit->tx_id = $payment_id;
                         $deposit->status = 'completed';
                         $deposit->description = 'Deposit from Crypto';
