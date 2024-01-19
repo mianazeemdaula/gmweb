@@ -35,25 +35,17 @@ class CheckOfferWinJob implements ShouldQueue
         ->where('active', true)->whereNotIn('id',$availedOfferIds)->get();
         foreach ($offers as $offer) {
             if($offer->offer_type == 'first_deposit'){
-                $deposit = $user->deposits()->where('status', 'completed')->first();
-                if($deposit && $deposit->amount >= $offer->min_price){
-                    $amount = 0;
-                    if($deposit->amount >= 0 && $deposit->amount <= 100){
-                        $amount = ($deposit->amount * 1) / 100;
-                    }else if($deposit->amount >= 101 && $deposit->amount <= 500){
-                        $amount = ($deposit->amount * 2) / 100;
-                    }else if($deposit->amount >= 501 && $deposit->amount <= 1000){
-                        $amount = ($deposit->amount * 3) / 100;
-                    }else if($deposit->amount >= 1001 && $deposit->amount <= 5000){
-                        $amount = ($deposit->amount * 4) / 100;
-                    }else {
-                        $amount = ($deposit->amount * 5) / 100;
+                $firstDepositOffers =  $user->offers()->where('offer_type', 'first_deposit')->count();
+                if($firstDepositOffers == 0){
+                    $deposit = $user->deposits()->where('status', 'completed')->first();
+                    if($deposit && $deposit->amount >= $offer->min_price){
+                        $amount = 0;
+                        $amount = ($deposit->amount * $offer->reward_price) / 100;
+                        $user->offers()->attach($offer->id, ['price' => $amount]);
+                        $user->updateWallet($amount, 'First Deposit Reward', true);
+                        $offer->qty_sold = $offer->qty_sold + 1;
+                        $offer->save();
                     }
-                        
-                    $user->offers()->attach($offer->id, ['price' => $amount]);
-                    $user->updateWallet($amount, 'First Deposit Reward', true);
-                    $offer->qty_sold = $offer->qty_sold + 1;
-                    $offer->save();
                 }
             }
             // else if($offer->offer_type == 'deposit'){
