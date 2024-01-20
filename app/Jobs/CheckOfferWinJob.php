@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 use App\Models\Offer;
+use App\Models\Deposit;
 
 class CheckOfferWinJob implements ShouldQueue
 {
@@ -38,11 +39,19 @@ class CheckOfferWinJob implements ShouldQueue
                 $firstDepositOffers =  $user->offers()->where('offer_type', 'first_deposit')->count();
                 if($firstDepositOffers == 0){
                     $deposit = $user->deposits()->where('status', 'completed')->first();
-                    if($deposit && $deposit->amount <= $offer->max_price){
+                    if($deposit && $deposit->amount >= $offer->min_price  && $deposit->amount <= $offer->max_price){
                         $amount = 0;
                         $amount = ($deposit->amount * $offer->reward_price) / 100;
                         $user->offers()->attach($offer->id, ['price' => $amount]);
-                        $user->updateWallet($amount, 'First Deposit Reward', true);
+                        // $user->updateWallet($amount, 'First Deposit Reward', true);
+                        $dep = new Deposit();
+                        $dep->user_id = $user->id;
+                        $dep->payment_method_id = 1;
+                        $dep->amount = $amount;
+                        $dep->tx_id = '0000000';
+                        $dep->status = 'completed';
+                        $dep->description = 'First Deposit Reward';
+                        $dep->save();
                         $offer->qty_sold = $offer->qty_sold + 1;
                         $offer->save();
                     }
