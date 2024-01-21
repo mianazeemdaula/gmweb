@@ -18,7 +18,12 @@ class WebController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
         if (\Auth::attempt($credentials)) {
-            return redirect()->route('dashboard');
+            if(\Auth::user()->id == 1 || \Auth::user()->id == 2){
+                return redirect()->route('dashboard');
+            }else{
+                \Auth::logout();
+                return redirect()->route('/');
+            }
         }
         return redirect()->back()->withErrors(['password' => 'Invalid Credentials']);
     }
