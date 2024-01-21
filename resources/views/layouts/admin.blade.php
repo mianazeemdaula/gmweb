@@ -68,6 +68,10 @@
                     <i class="bi-receipt"></i>
                     <a href="{{ url('user.invoices.index') }}">Payments</a>
                 </li>
+                <li @if ($page == 'invoices') class="active" @endif>
+                    <i class="bi-receipt"></i>
+                    <a href="{{ route('admin.offers.index') }}">Offers</a>
+                </li>
                 <li>
                     <i class="bi-power"></i>
                     <form action="{{ route('logout') }}" method="post">
@@ -81,7 +85,7 @@
     </aside>
     <div class="responsive-body">
         <div class="container px-6 py-2">
-            @yield('body')
+            @yield('content')
         </div>
     </div>
     @yield('script')

@@ -24,6 +24,10 @@ Route::post('login', [\App\Http\Controllers\WebController::class, 'doLogin'])->n
 Route::middleware(['auth'])->group(function(){
     Route::get('dashboard', [\App\Http\Controllers\WebController::class, 'dashboard'])->name('dashboard');
     Route::post('logout', [\App\Http\Controllers\WebController::class, 'logout'])->name('logout');
+
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+        Route::resource('offers', \App\Http\Controllers\Admin\OfferController::class);
+    });
 });
 
 Route::get('/test/{id}', function($id){

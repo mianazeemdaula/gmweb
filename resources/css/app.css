@@ -105,12 +105,4 @@
     .step .bi-check-lg {
         @apply hidden;
     }
-
-    .step.done {
-        @apply text-secondary;
-    }
-
-    .step.done .bi-check-lg {
-        @apply flex;
-    }
 }

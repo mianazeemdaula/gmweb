@@ -56,6 +56,21 @@ class CheckOfferWinJob implements ShouldQueue
                         $offer->save();
                     }
                 }
+            }else if($offer->offer_type == 'welcome_bonus'){
+                $welcomeBonusCount =  $user->offers()->where('offer_type', 'welcome_bonus')->count();
+                if($welcomeBonusCount == 0){
+                    $deposit = $user->deposits()->where('status', 'completed')->first();
+                    if($deposit && $deposit->amount >= $offer->min_price  && $deposit->amount <= $offer->max_price){
+                        $amount = $offer->reward_price;
+                        if($offer->reward_type == "P"){
+                            $amount = ($deposit->amount * $offer->reward_price) / 100;
+                        }
+                        $user->offers()->attach($offer->id, ['price' => $amount]);
+                        $user->updateWallet($amount, 'Welcome Reward', true);
+                        $offer->qty_sold = $offer->qty_sold + 1;
+                        $offer->save();
+                    }
+                }
             }
             // else if($offer->offer_type == 'deposit'){
             //     $deposit = $user->deposits()->where('status', 'completed')->where('amount', '>=', $offer->price)->first();
