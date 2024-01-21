@@ -47,6 +47,7 @@ class AppController extends Controller
         $data['app_logo'] = asset('images/logo.png');
         $data['currencies'] = Currency::whereIn('name',['PKR','USD','AED','ZAR','SAR'])->get();
         $data['app_description'] = 'Crypto MLM is a web application that allows you to manage your mlm business easily.';
+        $data['coins'] = ["USDTBSC", "USDTTRC20", "USDTDOT", "USDTERC20", "USDTMATIC", "USDTSOL", "USDTALGO", "TRX"];
         return response()->json($data);
     }
 
