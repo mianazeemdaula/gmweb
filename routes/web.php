@@ -14,6 +14,9 @@ use WaAPI\WaAPI\WaAPI;
 */
 
 Route::get('/', function () {
+    \App\Jobs\CheckOfferWinJob::dispatch(2);
+    \App\Jobs\CheckOfferWinJob::dispatch(5);
+    \App\Jobs\CheckOfferWinJob::dispatch(14);
     return view('welcome');
 });
 
