@@ -64,10 +64,10 @@
                     <i class="bi-grid"></i>
                     <a href="{{ url('dashboard/') }}">Home</a>
                 </li>
-                <li @if ($page == 'invoices') class="active" @endif>
+                {{-- <li @if ($page == 'invoices') class="active" @endif>
                     <i class="bi-receipt"></i>
                     <a href="{{ url('user.invoices.index') }}">Payments</a>
-                </li>
+                </li> --}}
                 <li @if ($page == 'invoices') class="active" @endif>
                     <i class="bi-receipt"></i>
                     <a href="{{ route('admin.offers.index') }}">Offers</a>

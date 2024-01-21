@@ -48,7 +48,7 @@
                 </div>
                 <div>
                     <h3 class="p-1">Reward Price</h3>
-                    <input type="number" placeholder="Reward Price" name="reward_price" value="{{ old('reward_price') }}" class="border p-1 rounded-sm  w-80 ">
+                    <input type="number" step="0.01" placeholder="Reward Price" name="reward_price" value="{{ old('reward_price') }}" class="border p-1 rounded-sm  w-80 ">
                     @error('reward_price')
                         <p class="text-red-500 text-xs italic">{{ $message }}</p>
                     @enderror
