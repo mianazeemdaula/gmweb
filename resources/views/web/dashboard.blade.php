@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('body')
+@section('content')
 
 <div>
     <div class="grid grid-cols-4 gap-3">
@@ -12,7 +12,7 @@
         <div class="bg-white rounded text-center">
             <div class="p-4">
                 <div class="text-2xl font-bold text-green-500">{{ $userDepositCount }}</div>
-                <div class="text-sm text-gray-500">Total Users (Deposit)</div>
+                <div class="text-sm text-gray-500">Deposited Users</div>
             </div>
         </div>
 

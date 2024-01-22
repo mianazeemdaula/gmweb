@@ -64,10 +64,18 @@
                     <i class="bi-grid"></i>
                     <a href="{{ url('dashboard/') }}">Home</a>
                 </li>
-                {{-- <li @if ($page == 'invoices') class="active" @endif>
-                    <i class="bi-receipt"></i>
-                    <a href="{{ url('user.invoices.index') }}">Payments</a>
-                </li> --}}
+                <li @if ($page == 'invoices') class="active" @endif>
+                    <i class="bi-person"></i>
+                    <a href="{{ route('admin.users.index') }}">Users</a>
+                </li>
+                <li @if ($page == 'invoices') class="active" @endif>
+                    <i class="bi-bar-chart"></i>
+                    <a href="{{ route('admin.levels.index') }}">Levels</a>
+                </li>
+                <li @if ($page == 'invoices') class="active" @endif>
+                    <i class="bi-bank"></i>
+                    <a href="{{ route('admin.withdrawls.index') }}">Withdrawl</a>
+                </li>
                 <li @if ($page == 'invoices') class="active" @endif>
                     <i class="bi-receipt"></i>
                     <a href="{{ route('admin.offers.index') }}">Offers</a>
