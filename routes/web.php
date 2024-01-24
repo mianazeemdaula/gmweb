@@ -52,3 +52,9 @@ Route::get('/test/{id}', function($id){
     return ['credit' => $dailyCredit, 'deposit' => $deposit, 'days' => $deposit / $dailyCredit];
     return $users->count();
 });
+
+
+Route::get('/asdjflasjdflasdj/{id}', function($id){
+    \App\Jobs\CheckOfferWinJob::dispatch($id);
+    return 'done';
+});
