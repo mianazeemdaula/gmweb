@@ -30,6 +30,11 @@ Route::middleware(['auth'])->group(function(){
         Route::resource('withdrawls', \App\Http\Controllers\Admin\WithdrawlController::class);
         Route::resource('levels', \App\Http\Controllers\Admin\LevelController::class);
         Route::resource('offers', \App\Http\Controllers\Admin\OfferController::class);
+        Route::resource('deposits', \App\Http\Controllers\Admin\DepositController::class);
+
+        // nowpayment payout
+        Route::get('nowpayment/payout', [\App\Http\Controllers\WebController::class, 'nowPaymentPayout']);
+        Route::post('nowpayment/payout', [\App\Http\Controllers\WebController::class, 'doNowPaymentPayout']);
     });
 });
 

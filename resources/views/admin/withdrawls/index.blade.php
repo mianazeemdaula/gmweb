@@ -3,6 +3,9 @@
     <div class="w-full">
         <div class="flex items-center justify-between">
             <h5 class="">Withdrawls</h5>
+            <div>
+                <a href="{{ route('admin.withdrawls.create') }}" class="btn-blue">Create</a>
+            </div>
         </div>
         <div class="bg-white">
             <div class="overflow-x-auto mt-6 ">

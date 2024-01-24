@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Helper\NowPayment;
 
 class WebController extends Controller
 {
@@ -36,12 +37,14 @@ class WebController extends Controller
         $userDepositCount = \App\Models\User::whereHas('deposit', function ($q) {
             $q->where('status', 'completed');
         })->count();
+        $balance = (new NowPayment())->getBalance();
         return view('web.dashboard', [
             'deposit' => $deposit,
             'dailyCredit' => $dailyCredit,
             'days' => $deposit / ($dailyCredit == 0 ? 1 : $dailyCredit),
             'userCount' => $userCount,
             'userDepositCount' => $userDepositCount,
+            'balance' => $balance,
         ]);
     }
 
@@ -49,5 +52,23 @@ class WebController extends Controller
     {
         \Auth::logout();
         return redirect()->route('login');
+    }
+
+    public function nowPaymentPayout()
+    {
+        return view('admin.nowpayment.payout');
+    }
+
+    public function doNowPaymentPayout( Request $request)
+    {
+        $request->validate([
+            'amount' => 'required',
+            'currency' => 'required',
+            'address' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        $response = (new NowPayment())->payout($request);
+        return $response;
     }
 }

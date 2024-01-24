@@ -43,8 +43,35 @@ class NowPayment{
         return $response->json();
     }
 
-    public function payout($data){
-        $response = $this->client->post($this->url."/payout", $data);
+    public function payout($request){
+        // add more header to client
+        $authClient = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ]);
+        $authresponse =  $authClient->post($this->url."/auth", [
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        if($authresponse->status() != 200){
+            return $authresponse->json();
+        }
+        $token = $authresponse->json()['token'];
+        $payoutClient = Http::withHeaders([
+            'x-api-key' => $this->apikey,
+            'Content-Type' => 'application/json',
+            'Authorization' => "Bearer $token",
+        ]);
+        $response = $payoutClient->post($this->url."/payout", [
+            'ipn_callback_url' => url('/api/nowpayment/payoutipn'),
+            'withdrawals' => [
+                [
+                    'amount' => $request->amount,
+                    'currency' => $request->currency,
+                    'address' => $request->address,
+                    'ipn_callback_url' => url('/api/nowpayment/payoutipn'),
+                ]
+            ]
+        ]);
         return $response->json();
     }
 }
