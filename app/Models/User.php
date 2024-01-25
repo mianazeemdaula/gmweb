@@ -64,7 +64,7 @@ class User extends Authenticatable
     }
 
     public function wallet(){
-        return $this->hasOne(Wallet::class)->latest();
+        return $this->hasOne(Wallet::class)->orderBy('id');
     }
 
     public function transactions(){
