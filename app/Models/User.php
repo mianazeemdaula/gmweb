@@ -64,7 +64,7 @@ class User extends Authenticatable
     }
 
     public function wallet(){
-        return $this->hasOne(Wallet::class)->orderBy('id');
+        return $this->hasOne(Wallet::class)->orderBy('id','desc');
     }
 
     public function transactions(){
@@ -72,7 +72,7 @@ class User extends Authenticatable
     }
 
     public function deposit(){
-        return $this->hasOne(Deposit::class)->latest();
+        return $this->hasOne(Deposit::class)->orderBy('id','desc');
     }
 
     public function deposits(){
@@ -80,7 +80,7 @@ class User extends Authenticatable
     }
 
     public function withdrawl(){
-        return $this->hasOne(Withdrawl::class)->latest();
+        return $this->hasOne(Withdrawl::class)->orderBy('id','desc');
     }
 
     public function withdrawls(){
