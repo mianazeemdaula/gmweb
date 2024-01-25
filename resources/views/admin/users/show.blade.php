@@ -11,6 +11,7 @@
             </div>
             <div>
                 <div>Deposits: {{ $user->deposits->sum('amount') }}</div>
+                <div>Wallet: {{ $user->wallet->balance ?? 0 }}</div>
                 <div>Withdrawls: {{ $user->withdrawls->sum('amount') }}</div>
                 <div>Referrals: {{ $user->referrals->count() }}</div>
                 <div>Level: {{ $user->level->name }}</div>

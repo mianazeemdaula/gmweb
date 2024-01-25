@@ -37,14 +37,14 @@ class WebController extends Controller
         $userDepositCount = \App\Models\User::whereHas('deposit', function ($q) {
             $q->where('status', 'completed');
         })->count();
-        $balance = (new NowPayment())->getBalance();
+        // $balance = (new NowPayment())->getBalance();
         return view('web.dashboard', [
             'deposit' => $deposit,
             'dailyCredit' => $dailyCredit,
             'days' => $deposit / ($dailyCredit == 0 ? 1 : $dailyCredit),
             'userCount' => $userCount,
             'userDepositCount' => $userDepositCount,
-            'balance' => $balance,
+            // 'balance' => $balance,
         ]);
     }
 
