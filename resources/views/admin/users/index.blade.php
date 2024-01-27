@@ -80,6 +80,9 @@
                                         <a href="{{ route('admin.users.show', $item->id) }}">
                                             <span class="bi bi-eye"></span>
                                         </a>
+                                        <a href="{{ route('admin.users.wallet.index', $item->id) }}">
+                                            <span class="bi bi-bank"></span>
+                                        </a>
                                         {{-- <a href="{{ route('admin.offers.edit', $item->id) }}">
                                             <span class="bi bi-pencil"></span>
                                         </a>

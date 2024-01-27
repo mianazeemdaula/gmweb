@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function(){
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        Route::resource('users.wallet', \App\Http\Controllers\Admin\WalletController::class);
         Route::resource('withdrawls', \App\Http\Controllers\Admin\WithdrawlController::class);
         Route::resource('levels', \App\Http\Controllers\Admin\LevelController::class);
         Route::resource('offers', \App\Http\Controllers\Admin\OfferController::class);
