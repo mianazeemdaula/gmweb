@@ -94,7 +94,7 @@ class NowPayment{
             'Authorization' => "Bearer $token",
         ]);
         $batchId = $request->batch;
-        $response = $payoutClient->post($this->url."/$batchId/verify", [
+        $response = $payoutClient->post($this->url."/payout/$batchId/verify", [
             'verification_code' => $request->mail_code,
         ]);
         return $response->json();
