@@ -97,6 +97,6 @@ class NowPayment{
         $response = $payoutClient->post($this->url."/payout/$batchId/verify", [
             'verification_code' => $request->mail_code,
         ]);
-        return $response->json();
+        return $response->body();
     }
 }
