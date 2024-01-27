@@ -71,4 +71,13 @@ class WebController extends Controller
         $response = (new NowPayment())->payout($request);
         return $response;
     }
+
+    public function verifyNowPaymentPayout(){
+        return view('admin.nowpayment.payout_verify');
+    }
+
+    public function doverifyNowPaymentPayout(Request $request){
+        $response = (new NowPayment())->verifyPayout($request);
+        return $response;
+    }
 }

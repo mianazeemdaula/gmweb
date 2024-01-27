@@ -74,4 +74,29 @@ class NowPayment{
         ]);
         return $response->json();
     }
+
+    public function verifyPayout($request){
+        // add more header to client
+        $authClient = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ]);
+        $authresponse =  $authClient->post($this->url."/auth", [
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        if($authresponse->status() != 200){
+            return $authresponse->json();
+        }
+        $token = $authresponse->json()['token'];
+        $payoutClient = Http::withHeaders([
+            'x-api-key' => $this->apikey,
+            'Content-Type' => 'application/json',
+            'Authorization' => "Bearer $token",
+        ]);
+        $batchId = $request->batch;
+        $response = $payoutClient->post($this->url."/$batchId/verify", [
+            'verification_code' => $request->mail_code,
+        ]);
+        return $response->json();
+    }
 }

@@ -35,6 +35,8 @@ Route::middleware(['auth'])->group(function(){
         // nowpayment payout
         Route::get('nowpayment/payout', [\App\Http\Controllers\WebController::class, 'nowPaymentPayout']);
         Route::post('nowpayment/payout', [\App\Http\Controllers\WebController::class, 'doNowPaymentPayout']);
+        Route::get('nowpayment/payoutverify', [\App\Http\Controllers\WebController::class, 'verifyNowPaymentPayout']);
+        Route::post('nowpayment/payoutverify', [\App\Http\Controllers\WebController::class, 'doverifyNowPaymentPayout']);
     });
 });
 
