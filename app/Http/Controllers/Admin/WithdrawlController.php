@@ -54,7 +54,18 @@ class WithdrawlController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:pending,canceled,completed',
+        ]);
+
+        $withdrawl = Withdrawl::find($id);
+        $withdrawl->status = $request->status;
+        $withdrawl->save();
+        if($request->status == 'completed'){
+            $amount = $withdrawl->amount;
+            $withdrawl->user->updateWallet(-$amount , 'Withdrawl request completed');
+        }
+        return redirect()->back()->with('success', 'Withdrawl updated successfully');
     }
 
     /**

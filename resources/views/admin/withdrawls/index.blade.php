@@ -26,6 +26,9 @@
                                 Amount</th>
                                 <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Amount to Send</th>
+                                <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 From</th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -60,16 +63,23 @@
                                 </td>
                                 <td>
                                     <div class="flex space-x-3">
-                                        <a href="{{ route('admin.withdrawls.show', $item->id) }}">
+                                        {{-- <a href="{{ route('admin.withdrawls.show', $item->id) }}">
                                             <span class="bi bi-eye"></span>
-                                        </a>
-                                        <a href="{{ route('admin.withdrawls.edit', $item->id) }}">
+                                        </a> --}}
+                                        {{-- <a href="{{ route('admin.withdrawls.edit', $item->id) }}">
                                             <span class="bi bi-pencil"></span>
-                                        </a>
-                                        <form action="{{ route('admin.withdrawls.destroy', $item->id) }}" method="post">
+                                        </a> --}}
+                                        <form action="{{ route('admin.withdrawls.update', $item->id) }}" method="post">
                                             @csrf
-                                            @method('delete')
-                                            <button type="submit"><span class="bi bi-trash"></span></button>
+                                            @method('PUT')
+                                            <input type="hidden" name="status" value="completed">
+                                            <button type="submit"><span class="bi bi-check-circle"></span></button>
+                                        </form>
+                                        <form action="{{ route('admin.withdrawls.update', $item->id) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="status" value="canceled">
+                                            <button type="submit"><span class="bi x-circle"></span></button>
                                         </form>
                                     </div>
                                 </td>
