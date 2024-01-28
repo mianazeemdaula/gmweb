@@ -56,6 +56,9 @@
                                     {{ $item->account }}
                                 </td>
                                 <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $item->amount }}
+                                </td>
+                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                                     {{ $item->amount - ($item->amount * 0.10) }}
                                 </td>
                                 <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
