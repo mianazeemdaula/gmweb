@@ -72,24 +72,20 @@
                                 </td>
                                 <td>
                                     <div class="flex space-x-3">
-                                        {{-- <a href="{{ route('admin.withdrawls.show', $item->id) }}">
-                                            <span class="bi bi-eye"></span>
-                                        </a> --}}
-                                        {{-- <a href="{{ route('admin.withdrawls.edit', $item->id) }}">
-                                            <span class="bi bi-pencil"></span>
-                                        </a> --}}
-                                        <form action="{{ route('admin.withdrawls.update', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status" value="completed">
-                                            <button type="submit"><span class="bi bi-check-circle"></span></button>
-                                        </form>
-                                        <form action="{{ route('admin.withdrawls.update', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status" value="canceled">
-                                            <button type="submit"><span class="bi bi-x-circle"></span></button>
-                                        </form>
+                                        @if($item->status == 'pending')
+                                            <form action="{{ route('admin.withdrawls.update', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="status" value="completed">
+                                                <button type="submit"><span class="bi bi-check-circle"></span></button>
+                                            </form>
+                                            <form action="{{ route('admin.withdrawls.update', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="status" value="canceled">
+                                                <button type="submit"><span class="bi bi-x-circle"></span></button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
