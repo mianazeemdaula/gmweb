@@ -13,29 +13,32 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 ID</th>
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 User</th>
                                 <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Account</th>
                                 <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Amount</th>
                                 <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Amount to Send</th>
                                 <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                From</th>
+                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Coin</th>
+                                <th scope="col"
+                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Date/Time</th>
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status
                             </th>
                             <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Action
                             </th>
                         </tr>
@@ -43,22 +46,25 @@
                     <tbody class="bg-white divide-y divide-gray-200 " id="chatlist">
                         @foreach ($withdrawls as $item)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                                     {{ $item->id }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                                     {{ $item->user->name }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                                     {{ $item->account }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->amount }}
+                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $item->amount - ($item->amount * 0.10) }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $item->coin }}
+                                </td>
+                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                                     {{ $item->created_at }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                                     {{ $item->status}}
                                 </td>
                                 <td>

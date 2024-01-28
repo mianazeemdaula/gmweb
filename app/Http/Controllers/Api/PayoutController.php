@@ -36,6 +36,7 @@ class PayoutController extends Controller
         $payout->amount = $data['amount'];
         $payout->account = $data['address'];
         $payout->payment_method_id = 1;
+        $payout->coin = strtoupper($request->currency);
         $payout->save();
         // $user->updateWallet(-$data['amount'], 'Payout request');
         return response()->json([
