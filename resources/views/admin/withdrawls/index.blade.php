@@ -88,7 +88,7 @@
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="canceled">
-                                            <button type="submit"><span class="bi x-circle"></span></button>
+                                            <button type="submit"><span class="bi bi-x-circle"></span></button>
                                         </form>
                                     </div>
                                 </td>

@@ -31,6 +31,12 @@ class PayoutController extends Controller
         //         'status' => 'continue',
         //     ]);
         // }
+        $isPending = Withdrawl::where('user_id', $user->id)->where('status', 'pending')->first();
+        if($isPending){
+            return response()->json([
+                'message' => 'You already have a pending payout request'
+            ], 422);
+        }
         $payout = new Withdrawl();
         $payout->user_id = $user->id;
         $payout->amount = $data['amount'];
