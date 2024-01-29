@@ -83,6 +83,9 @@
                                         <a href="{{ route('admin.users.wallet.index', $item->id) }}">
                                             <span class="bi bi-bank"></span>
                                         </a>
+                                        <a href="{{ route('admin.users.deposit.index', $item->id) }}">
+                                            <span class="bi bi-safe"></span>
+                                        </a>
                                         {{-- <a href="{{ route('admin.offers.edit', $item->id) }}">
                                             <span class="bi bi-pencil"></span>
                                         </a>
