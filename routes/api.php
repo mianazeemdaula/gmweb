@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
         Route::post('verify-otp', [App\Http\Controllers\Api\UserController::class, 'verifyOTP']);
         Route::get('profile', [App\Http\Controllers\Api\UserController::class, 'profile']);
         Route::post('update', [App\Http\Controllers\Api\UserController::class, 'updateProfile']);
+        Route::post('mine', [App\Http\Controllers\Api\UserController::class, 'doMining']);
+        Route::get('ref-statistics', [App\Http\Controllers\Api\UserController::class, 'refStatistics']);
         Route::get('referrals', [App\Http\Controllers\Api\UserController::class, 'referrals']);
         Route::get('referrer', [App\Http\Controllers\Api\UserController::class, 'referrer']);
         Route::get('deposits', [App\Http\Controllers\Api\UserController::class, 'deposits']);

@@ -11,6 +11,11 @@ use WaAPI\WaAPI\WaAPI;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyApiEmail;
 use Carbon\Carbon;
+use App\Models\Mining;
+use App\Models\Wallet;
+use App\Models\Deposit;
+use App\Models\Withdrawl;
+
 
 class UserController extends Controller
 {
@@ -24,6 +29,7 @@ class UserController extends Controller
         ->where('is_bonus', true)->sum('credit');
         $data['deposit'] = $user->deposits()->sum('amount');
         $data['withdrawl'] = $user->withdrawls()->whereIn('status', ['completed','confirmed'])->sum('amount');
+        $data['minig'] = Mining::where('user_id', $user->id)->where('mining_end', '>', now())->first();
         return response()->json($data);
     }
 
@@ -39,9 +45,46 @@ class UserController extends Controller
             $user->image = $fileName;
         }
         if($request->has('start_mining')){
+            // $this->doMining($request);
             $user->mining_started_at = now();
         }
         $user->save();
+        return $this->profile();
+    }
+
+    public function doMining(Request $request)  {
+        
+        $user = $request->user();
+        $isMining = Mining::where('user_id', $user->id)->first();
+        if($isMining){
+            return response()->json(['message'=> 'You are already mining'], 422);
+        }
+        $amount = ($user->level->return_percentage * $user->deposits()->sum('amount')) / 100;
+        $referralEarnings = 0;
+        // Level 1 Referrals
+        foreach ($user->paidReferrals as $referral) {
+            $referralEarnL1 = ($referral->level->return_percentage * $referral->deposits()->sum('amount')) / 100;
+            $earnOnL1 = ($referralEarnL1 * 8) / 100;
+            $referralEarnings += $earnOnL1;
+            // Level 2 Referrals
+            foreach ($referral->paidReferrals as $referralL2) {
+                $referralEarnL2 = ($referralL2->level->return_percentage * $referralL2->deposits()->sum('amount')) / 100;
+                $earnOnL2 = ($referralEarnL2 * 5) / 100;
+                $referralEarnings += $earnOnL2;
+                // Level 3 Referrals
+                foreach ($referralL2->paidReferrals as $referralL3) {
+                    $referralEarnL3 = ($referralL3->level->return_percentage * $referralL3->deposits()->sum('amount')) / 100;
+                    $earnOnL3 = ($referralEarnL3 * 3) / 100;
+                    $referralEarnings += $earnOnL3;
+                }
+            }
+        }
+        $mining = new Mining();
+        $mining->user_id = $user->id;
+        $mining->amount = $amount;
+        $mining->ref_amount = $referralEarnings;
+        $mining->mining_end = now()->addDays(1);
+        $mining->save();
         return $this->profile();
     }
 
@@ -79,6 +122,23 @@ class UserController extends Controller
         return response()->json($transactions);
     }
 
+    public function refStatistics(){
+        $user = auth()->user();
+        $l1RefIds = $user->referrals->pluck('id');
+        $l2RefIds = User::whereIn('referral', $l1RefIds)->pluck('id');
+        $l3RefIds = User::whereIn('referral', $l2RefIds)->pluck('id');
+        $refIds = array_merge($l1RefIds->toArray(), $l2RefIds->toArray(), $l3RefIds->toArray());
+        $data['total_earning'] = Wallet::whereIn('user_id', $refIds)->where('is_bonus',true)->sum('credit');
+        $data['today_earning'] = Wallet::whereIn('user_id', $refIds)->whereDate('created_at',now())->where('is_bonus',true)->sum('credit');
+        $data['total_deposit'] = Deposit::whereIn('user_id', $refIds)->sum('amount');
+        $data['today_deposit'] = Deposit::whereIn('user_id', $refIds)->whereDate('created_at',now())->sum('amount');
+        $data['total_withdrawl'] = Withdrawl::whereIn('user_id', $refIds)->whereIn('status', ['completed','confirmed'])->sum('amount');
+        $data['today_withdrawl'] = Withdrawl::whereIn('user_id', $refIds)->whereIn('status', ['completed','confirmed'])->whereDate('created_at',now())->sum('amount');
+        $data['l1_ref_count'] = count($l1RefIds);
+        $data['l2_ref_count'] = count($l2RefIds);
+        $data['l3_ref_count'] = count($l3RefIds);
+        return response()->json($data); 
+    }
     
     public function sendOTP(Request $request){
         $request->validate([
