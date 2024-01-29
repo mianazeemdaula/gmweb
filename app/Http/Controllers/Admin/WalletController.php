@@ -15,7 +15,7 @@ class WalletController extends Controller
     public function index($id)
     {
         $wallet = Wallet::where('user_id', $id)->orderBy('id', 'desc')->paginate();
-        return view('admin.wallet.index', compact('wallet'));
+        return view('admin.wallet.index', compact('wallet', 'id'));
     }
 
     /**
@@ -93,5 +93,17 @@ class WalletController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function recalculate($id){
+        $transactions = Wallet::where('user_id', $id)->orderBy('id', 'asc')->get();
+        $balance = 0;
+        foreach($transactions as $transaction){
+            $balance += $transaction->credit;
+            $balance -= $transaction->debit;
+            $transaction->balance = $balance;
+            $transaction->save();
+        }
+        return redirect()->route('admin.users.wallet.index',$id)->with('success', 'Wallet recalculated successfully');
     }
 }

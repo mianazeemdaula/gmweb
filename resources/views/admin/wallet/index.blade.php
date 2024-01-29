@@ -2,10 +2,10 @@
 @section('content')
     <div class="w-full">
         <div class="flex items-center justify-between">
-            <h5 class="">Levels</h5>
-            <a href="{{ route('admin.levels.create') }}">
+            <h5 class="">Wallet</h5>
+            <a href="{{ url("admin/users-wallet-recalulate/$id") }}">
                 <div class="px-4 bg-green-700 text-white rounded-xl">
-                    Add Level
+                    Recalculate
                 </div>
             </a>
         </div>
