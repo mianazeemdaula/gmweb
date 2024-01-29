@@ -29,7 +29,7 @@ class UserController extends Controller
         ->where('is_bonus', true)->sum('credit');
         $data['deposit'] = $user->deposits()->sum('amount');
         $data['withdrawl'] = $user->withdrawls()->whereIn('status', ['completed','confirmed'])->sum('amount');
-        $data['minig'] = Mining::where('user_id', $user->id)->where('mining_end', '>', now())->first();
+        $data['mining'] = Mining::where('user_id', $user->id)->where('mining_end', '>', now())->first();
         return response()->json($data);
     }
 
