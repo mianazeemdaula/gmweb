@@ -38,6 +38,7 @@ class WebController extends Controller
             $q->where('status', 'completed');
         })->count();
         // $balance = (new NowPayment())->getBalance();
+        $activeMinnners = \App\Models\Mining::where('mining_end', '>', now())->count();
         return view('web.dashboard', [
             'deposit' => $deposit,
             'dailyCredit' => $dailyCredit,
@@ -45,6 +46,7 @@ class WebController extends Controller
             'userCount' => $userCount,
             'userDepositCount' => $userDepositCount,
             // 'balance' => $balance,
+            'activeMinnners' => $activeMinnners,
         ]);
     }
 

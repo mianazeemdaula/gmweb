@@ -30,6 +30,15 @@
             </div>
         </div>
 
+        <div class="bg-white rounded text-center">
+            <div class="p-4">
+                <div class="text-2xl font-bold text-green-500">{{ $activeMinnners }}</div>
+                <div class="text-sm text-gray-500">Active Minners</div>
+            </div>
+        </div>
+
+        
+
         {{-- <div class="bg-white rounded text-center">
             <div class="p-4">
                 <div class="text-2xl font-bold text-green-500">{{json_encode($balance) }}</div>
