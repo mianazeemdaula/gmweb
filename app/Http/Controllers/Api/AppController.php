@@ -42,7 +42,7 @@ class AppController extends Controller
         }else{
             $this->fetch();
         }
-        $data['app_version'] = '1.0.6';
+        $data['app_version'] = '1.0.7';
         $data['app_name'] = 'Crypto MLM';
         $data['app_logo'] = asset('images/logo.png');
         $data['currencies'] = Currency::whereIn('name',['PKR','USD','AED','ZAR','SAR'])->get();
