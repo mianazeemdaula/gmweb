@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Mining;
+use App\Models\Wallet;
 
 class MiningBonusCommand extends Command
 {
@@ -39,6 +40,16 @@ class MiningBonusCommand extends Command
                 $user->updateWallet($refAmount, 'Earn on referrals',true);
             }
             $mining->delete();
+
+            // 
+            $transactions = Wallet::where('user_id', $user->id)->orderBy('id', 'asc')->get();
+            $balance = 0;
+            foreach($transactions as $transaction){
+                $balance += $transaction->credit;
+                $balance -= $transaction->debit;
+                $transaction->balance = $balance;
+                $transaction->save();
+            }
         }
     }
 }
