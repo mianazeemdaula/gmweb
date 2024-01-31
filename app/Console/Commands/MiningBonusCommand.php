@@ -41,7 +41,7 @@ class MiningBonusCommand extends Command
             }
             $mining->delete();
 
-            // 
+            // update wallet balance for user after mining bonus is processed
             $transactions = Wallet::where('user_id', $user->id)->orderBy('id', 'asc')->get();
             $balance = 0;
             foreach($transactions as $transaction){
