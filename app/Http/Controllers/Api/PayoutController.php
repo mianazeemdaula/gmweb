@@ -20,11 +20,11 @@ class PayoutController extends Controller
                 'message' => 'Insufficient balance'
             ], 422);
         }
-        // if($user->paidReferrals()->count() < 7){
-        //     return response()->json([
-        //         'message' => 'You need at least 7 referrals to request payout'
-        //     ], 422);
-        // }
+        if($user->paidReferrals()->count() < 7){
+            return response()->json([
+                'message' => 'You need at least 7 referrals to request payout'
+            ], 422);
+        }
         // if($request->status == 'pending'){
         //     return response()->json([
         //         'message' => 'Transfer request may proceed',
