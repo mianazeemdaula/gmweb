@@ -23,7 +23,7 @@ class DepositController extends Controller
      */
     public function create($userId)
     {
-        return view('admin.users.deposit.create',compact('userId'));
+        return view('admin.deposit.create',compact('userId'));
     }
 
     /**
