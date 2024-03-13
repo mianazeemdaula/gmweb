@@ -21,33 +21,29 @@ class DepositController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($userId)
     {
-        return view('admin.levels.create');
+        return view('admin.users.deposit.create',compact('userId'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $userId)
     {
         $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'return_percentage' => 'required',
-            'min_price' => 'required',
-            'max_price' => 'required',
-            'active' => 'required',
+            'amount' => 'required|numeric|min:1',
         ]);
-        $level = new Level();
-        $level->name = $request->name;
-        $level->description = $request->description;
-        $level->return_percentage = $request->return_percentage;
-        $level->min_price = $request->min_price;
-        $level->max_price = $request->max_price;
-        $level->active = $request->active;
-        $level->save();
-        return redirect()->route('admin.levels.index')->with('success', 'Level created successfully');
+        $deposit = new Deposit();
+        $deposit->user_id = $userId;
+        $deposit->payment_method_id = 1;
+        $deposit->amount =  $request->amount;
+        $deposit->tx_id = Str::random(10);
+        $deposit->status = 'completed';
+        $deposit->description = 'Deposit from Crypto';
+        $deposit->save();
+        \App\Jobs\CheckOfferWinJob::dispatch($userId);
+        return redirect()->route('admin.users.deposit.index', $userId)->with('success', 'Deposit created successfully');
     }
 
     /**
