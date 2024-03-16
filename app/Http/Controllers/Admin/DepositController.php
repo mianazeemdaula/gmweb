@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Deposit;
 use Illuminate\Support\Str;
+use App\Models\User;
+use App\Models\Level;
 
 class DepositController extends Controller
 {
@@ -42,6 +44,14 @@ class DepositController extends Controller
         $deposit->status = 'completed';
         $deposit->description = 'Deposit from Crypto';
         $deposit->save();
+        $amount = $user->deposits()->sum('amount');
+        $user = User::find($userId);
+        $level = Level::where('min_price', '<=', $amount)
+        ->where('max_price', '>=', $amount)->first();
+        if($level){
+            $user->level_id = $level->id;
+            $user->save();
+        }
         \App\Jobs\CheckOfferWinJob::dispatch($userId);
         return redirect()->route('admin.users.deposit.index', $userId)->with('success', 'Deposit created successfully');
     }
