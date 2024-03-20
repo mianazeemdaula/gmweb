@@ -47,7 +47,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $levels = \App\Models\Level::all();
+        return view('admin.users.edit', compact('user','levels'));
     }
 
     /**
@@ -55,7 +57,15 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'level' => 'required|exists:levels,id',
+            'name' => 'required|string',
+        ]);
+        $user = User::findOrFail($id);
+        $user->level_id = $request->level;
+        $user->save();
+        \App\Jobs\CheckOfferWinJob::dispatch($user->id);
+        return redirect()->route('admin.users.show',[$id]);
     }
 
     /**
