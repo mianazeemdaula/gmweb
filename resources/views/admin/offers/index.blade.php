@@ -92,8 +92,3 @@
         </div>
     </div>
 @endsection
-<div class="mt-4">
-    <x-web-pagination :paginator="$offers" />
-</div>
-</div>
-@endsection
