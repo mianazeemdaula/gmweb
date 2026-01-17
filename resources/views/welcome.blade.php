@@ -307,7 +307,7 @@
             <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                 Join thousands of investors who are already earning passive income through cryptocurrency mining.
             </p>
-            <a href="{{ route('register') }}"
+            <a href="{{ route('/') }}"
                 class="inline-block px-12 py-4 bg-white text-green-600 rounded-lg font-bold text-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200">
                 Get Started Now
             </a>
