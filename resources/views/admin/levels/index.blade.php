@@ -34,8 +34,8 @@
                             <tr>
                                 <td class="font-medium text-gray-900">{{ $item->id }}</td>
                                 <td class="font-semibold text-gray-800">{{ $item->name }}</td>
-                                <td class="font-medium text-gray-700">\${{ number_format($item->min_price, 2) }}</td>
-                                <td class="font-medium text-gray-700">\${{ number_format($item->max_price, 2) }}</td>
+                                <td class="font-medium text-gray-700">${{ number_format($item->min_price, 2) }}</td>
+                                <td class="font-medium text-gray-700">${{ number_format($item->max_price, 2) }}</td>
                                 <td>
                                     <span class="badge badge-success">{{ $item->return_percentage }}%</span>
                                 </td>

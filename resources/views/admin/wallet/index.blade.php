@@ -37,7 +37,7 @@
                                 <td>
                                     @if ($item->debit > 0)
                                         <span
-                                            class="font-semibold text-red-600">-\${{ number_format($item->debit, 2) }}</span>
+                                            class="font-semibold text-red-600">-${{ number_format($item->debit, 2) }}</span>
                                     @else
                                         <span class="text-gray-400">-</span>
                                     @endif
@@ -45,12 +45,12 @@
                                 <td>
                                     @if ($item->credit > 0)
                                         <span
-                                            class="font-semibold text-green-600">+\${{ number_format($item->credit, 2) }}</span>
+                                            class="font-semibold text-green-600">+${{ number_format($item->credit, 2) }}</span>
                                     @else
                                         <span class="text-gray-400">-</span>
                                     @endif
                                 </td>
-                                <td class="font-bold text-gray-900">\${{ number_format($item->balance, 2) }}</td>
+                                <td class="font-bold text-gray-900">${{ number_format($item->balance, 2) }}</td>
                                 <td class="text-xs text-gray-500">
                                     {{ $item->updated_at->format('M d, Y H:i') }}
                                 </td>

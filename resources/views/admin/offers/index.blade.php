@@ -42,13 +42,13 @@
                                     <span class="badge badge-info">{{ ucfirst($item->offer_type) }}</span>
                                 </td>
                                 <td class="text-sm text-gray-700">
-                                    \${{ number_format($item->min_price, 0) }} - \${{ number_format($item->max_price, 0) }}
+                                    ${{ number_format($item->min_price, 0) }} - ${{ number_format($item->max_price, 0) }}
                                 </td>
                                 <td class="font-semibold text-green-600">
                                     @if ($item->reward_type == 'P')
                                         {{ $item->reward_price }}%
                                     @else
-                                        \${{ number_format($item->reward_price, 2) }}
+                                        ${{ number_format($item->reward_price, 2) }}
                                     @endif
                                 </td>
                                 <td class="text-xs text-gray-500">

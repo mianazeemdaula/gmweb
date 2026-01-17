@@ -28,7 +28,7 @@
                             <tr>
                                 <td class="font-medium text-gray-900">{{ $item->id }}</td>
                                 <td class="text-gray-700">{{ $item->description }}</td>
-                                <td class="font-semibold text-green-600">\${{ number_format($item->amount, 2) }}</td>
+                                <td class="font-semibold text-green-600">${{ number_format($item->amount, 2) }}</td>
                                 <td>
                                     @if ($item->status == 'completed')
                                         <span class="badge badge-success">Completed</span>

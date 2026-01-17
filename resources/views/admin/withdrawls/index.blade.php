@@ -43,9 +43,9 @@
                                 <td class="font-mono text-xs max-w-xs truncate" title="{{ $item->account }}">
                                     {{ $item->account }}
                                 </td>
-                                <td class="font-semibold text-gray-800">\${{ number_format($item->amount, 2) }}</td>
+                                <td class="font-semibold text-gray-800">${{ number_format($item->amount, 2) }}</td>
                                 <td class="font-semibold text-green-600">
-                                    \${{ number_format($item->amount - $item->amount * 0.1, 2) }}
+                                    ${{ number_format($item->amount - $item->amount * 0.1, 2) }}
                                     <span class="text-xs text-gray-500">(10% fee)</span>
                                 </td>
                                 <td>

@@ -53,17 +53,17 @@
                         <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">
                             <p class="text-xs font-semibold text-green-700 uppercase">Deposits</p>
                             <p class="text-2xl font-bold text-green-600">
-                                \${{ number_format($user->deposits->sum('amount'), 2) }}</p>
+                                ${{ number_format($user->deposits->sum('amount'), 2) }}</p>
                         </div>
                         <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4">
                             <p class="text-xs font-semibold text-blue-700 uppercase">Wallet</p>
                             <p class="text-2xl font-bold text-blue-600">
-                                \${{ number_format($user->wallet->balance ?? 0, 2) }}</p>
+                                ${{ number_format($user->wallet->balance ?? 0, 2) }}</p>
                         </div>
                         <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4">
                             <p class="text-xs font-semibold text-purple-700 uppercase">Withdrawals</p>
                             <p class="text-2xl font-bold text-purple-600">
-                                \${{ number_format($user->withdrawls->sum('amount'), 2) }}</p>
+                                ${{ number_format($user->withdrawls->sum('amount'), 2) }}</p>
                         </div>
                         <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4">
                             <p class="text-xs font-semibold text-orange-700 uppercase">Referrals</p>
@@ -102,9 +102,9 @@
                                 <td class="font-medium text-gray-900">{{ $referal->name }}</td>
                                 <td class="text-gray-700">{{ $referal->email }}</td>
                                 <td class="font-semibold text-green-600">
-                                    \${{ number_format($referal->deposits->sum('amount'), 2) }}</td>
+                                    ${{ number_format($referal->deposits->sum('amount'), 2) }}</td>
                                 <td class="font-semibold text-purple-600">
-                                    \${{ number_format($referal->withdrawls->sum('amount'), 2) }}</td>
+                                    ${{ number_format($referal->withdrawls->sum('amount'), 2) }}</td>
                                 <td>
                                     <span class="badge badge-info">{{ $referal->referrals->count() }}</span>
                                 </td>

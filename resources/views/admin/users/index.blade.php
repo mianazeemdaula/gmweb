@@ -47,7 +47,7 @@
                                     <span class="badge badge-info">{{ $item->level->name }}</span>
                                 </td>
                                 <td class="font-semibold text-green-600">
-                                    \${{ number_format($item->deposits()->sum('amount'), 2) }}</td>
+                                    ${{ number_format($item->deposits()->sum('amount'), 2) }}</td>
                                 <td class="text-xs text-gray-500">{{ $item->created_at->format('M d, Y') }}</td>
                                 <td>
                                     @if ($item->status == 'active')
