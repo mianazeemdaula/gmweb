@@ -109,11 +109,6 @@
                     @else
                         <a href="{{ route('login') }}"
                             class="px-4 py-2 text-gray-700 hover:text-green-600 transition-colors">Login</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}"
-                                class="px-6 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">Get
-                                Started</a>
-                        @endif
                     @endauth
                 </div>
             </div>
@@ -136,12 +131,8 @@
                         platform.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-200">
-                        <a href="{{ route('register') }}"
-                            class="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 text-center">
-                            Start Investing
-                        </a>
                         <a href="#features"
-                            class="px-8 py-4 bg-white text-gray-700 rounded-lg font-semibold border-2 border-gray-200 hover:border-green-600 hover:text-green-600 transition-all duration-200 text-center">
+                            class="px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 text-center">
                             Learn More
                         </a>
                     </div>
@@ -307,9 +298,9 @@
             <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                 Join thousands of investors who are already earning passive income through cryptocurrency mining.
             </p>
-            <a href="{{ route('/') }}"
+            <a href="{{ route('login') }}"
                 class="inline-block px-12 py-4 bg-white text-green-600 rounded-lg font-bold text-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200">
-                Get Started Now
+                Login to Continue
             </a>
         </div>
     </section>
@@ -520,11 +511,6 @@ var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shad
                     <a href="{{ route('login') }}"
                         class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
                         in</a>
-
-                    @if (Route::has('register'))
-                        <a href="{{ route('/') }}"
-                            class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-                    @endif
                 @endauth
             </div>
         @endif
