@@ -1,94 +1,81 @@
 @extends('layouts.admin')
 @section('content')
-    <div class="w-full">
-        <div class="flex items-center justify-between">
-            <h5 class="">Offers</h5>
-            <a href="{{ route('admin.offers.create') }}">
-                <div class="px-4 bg-green-700 text-white rounded-xl">
-                    Add Offer
-                </div>
+    <div class="w-full space-y-6">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Offers</h1>
+                <p class="mt-1 text-sm text-gray-500">Manage promotional offers and rewards</p>
+            </div>
+            <a href="{{ route('admin.offers.create') }}" class="btn-primary">
+                <i class="bi bi-plus-lg mr-2"></i>
+                Add Offer
             </a>
         </div>
-        <div class="bg-white">
-            <div class="overflow-x-auto mt-6 ">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+
+        <!-- Offers Table Card -->
+        <div class="card">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                ID</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Code</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Type</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Price</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Reward</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Expire On</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Active</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Action
-                            </th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Type</th>
+                            <th>Price Range</th>
+                            <th>Reward</th>
+                            <th>Expires</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200 " id="chatlist">
+                    <tbody>
                         @foreach ($offers as $item)
                             <tr>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->id }}
+                                <td class="font-medium text-gray-900">{{ $item->id }}</td>
+                                <td class="font-semibold text-gray-800">{{ $item->name }}</td>
+                                <td>
+                                    <code class="px-2 py-1 bg-gray-100 rounded text-xs font-mono">{{ $item->code }}</code>
                                 </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->name }}
+                                <td>
+                                    <span class="badge badge-info">{{ ucfirst($item->offer_type) }}</span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->code }}
+                                <td class="text-sm text-gray-700">
+                                    \${{ number_format($item->min_price, 0) }} - \${{ number_format($item->max_price, 0) }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->offer_type }}
-                                </td>
-                                
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    ${{ $item->min_price }} - ${{ $item->max_price }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                                <td class="font-semibold text-green-600">
                                     @if ($item->reward_type == 'P')
                                         {{ $item->reward_price }}%
                                     @else
-                                        ${{ $item->reward_price }}
+                                        \${{ number_format($item->reward_price, 2) }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                                <td class="text-xs text-gray-500">
                                     {{ \Carbon\Carbon::parse($item->end_date)->diffForHumans() }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->active ? 'Active' : 'inactive' }}
+                                <td>
+                                    @if ($item->active)
+                                        <span class="badge badge-success">Active</span>
+                                    @else
+                                        <span class="badge badge-danger">Inactive</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    <div class="flex space-x-3">
-
-                                        <a href="{{ route('admin.offers.show', $item->id) }}">
-                                            <span class="bi bi-eye"></span>
+                                    <div class="flex items-center space-x-3">
+                                        <a href="{{ route('admin.offers.show', $item->id) }}" title="View">
+                                            <i class="bi bi-eye action-icon"></i>
                                         </a>
-                                        <a href="{{ route('admin.offers.edit', $item->id) }}">
-                                            <span class="bi bi-pencil"></span>
+                                        <a href="{{ route('admin.offers.edit', $item->id) }}" title="Edit">
+                                            <i class="bi bi-pencil action-icon"></i>
                                         </a>
-                                        <form action="{{ route('admin.offers.destroy', $item->id) }}" method="post">
+                                        <form action="{{ route('admin.offers.destroy', $item->id) }}" method="post"
+                                            class="inline">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit"><span class="bi bi-trash"></span></button>
+                                            <button type="submit" onclick="return confirm('Are you sure?')" title="Delete">
+                                                <i class="bi bi-trash action-icon-danger"></i>
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
@@ -98,8 +85,15 @@
                 </table>
             </div>
         </div>
-        <div class="mt-4">
+
+        <!-- Pagination -->
+        <div class="mt-6">
             <x-web-pagination :paginator="$offers" />
         </div>
     </div>
+@endsection
+<div class="mt-4">
+    <x-web-pagination :paginator="$offers" />
+</div>
+</div>
 @endsection

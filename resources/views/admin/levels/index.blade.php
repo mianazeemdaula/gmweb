@@ -1,84 +1,69 @@
 @extends('layouts.admin')
 @section('content')
-    <div class="w-full">
-        <div class="flex items-center justify-between">
-            <h5 class="">Levels</h5>
-            <a href="{{ route('admin.levels.create') }}">
-                <div class="px-4 bg-green-700 text-white rounded-xl">
-                    Add Level
-                </div>
+    <div class="w-full space-y-6">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Levels</h1>
+                <p class="mt-1 text-sm text-gray-500">Manage investment levels and packages</p>
+            </div>
+            <a href="{{ route('admin.levels.create') }}" class="btn-primary">
+                <i class="bi bi-plus-lg mr-2"></i>
+                Add Level
             </a>
         </div>
-        <div class="bg-white">
-            <div class="overflow-x-auto mt-6 ">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+
+        <!-- Levels Table Card -->
+        <div class="card">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                ID</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Min Price</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Max Price</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Return %</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Last Update</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Active</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Action
-                            </th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Min Price</th>
+                            <th>Max Price</th>
+                            <th>Return %</th>
+                            <th>Last Update</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200 " id="chatlist">
+                    <tbody>
                         @foreach ($levels as $item)
                             <tr>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->id }}
+                                <td class="font-medium text-gray-900">{{ $item->id }}</td>
+                                <td class="font-semibold text-gray-800">{{ $item->name }}</td>
+                                <td class="font-medium text-gray-700">\${{ number_format($item->min_price, 2) }}</td>
+                                <td class="font-medium text-gray-700">\${{ number_format($item->max_price, 2) }}</td>
+                                <td>
+                                    <span class="badge badge-success">{{ $item->return_percentage }}%</span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->name }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->min_price }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->max_price }}
-                                </td>
-                                
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->return_percentage }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                                <td class="text-xs text-gray-500">
                                     {{ \Carbon\Carbon::parse($item->updated_at)->diffForHumans() }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->active ? 'Active' : 'inactive' }}
+                                <td>
+                                    @if ($item->active)
+                                        <span class="badge badge-success">Active</span>
+                                    @else
+                                        <span class="badge badge-danger">Inactive</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    <div class="flex space-x-3">
-
-                                        <a href="{{ route('admin.levels.show', $item->id) }}">
-                                            <span class="bi bi-eye"></span>
+                                    <div class="flex items-center space-x-3">
+                                        <a href="{{ route('admin.levels.show', $item->id) }}" title="View">
+                                            <i class="bi bi-eye action-icon"></i>
                                         </a>
-                                        <a href="{{ route('admin.levels.edit', $item->id) }}">
-                                            <span class="bi bi-pencil"></span>
+                                        <a href="{{ route('admin.levels.edit', $item->id) }}" title="Edit">
+                                            <i class="bi bi-pencil action-icon"></i>
                                         </a>
-                                        <form action="{{ route('admin.levels.destroy', $item->id) }}" method="post">
+                                        <form action="{{ route('admin.levels.destroy', $item->id) }}" method="post"
+                                            class="inline">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit"><span class="bi bi-trash"></span></button>
+                                            <button type="submit" onclick="return confirm('Are you sure?')" title="Delete">
+                                                <i class="bi bi-trash action-icon-danger"></i>
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
@@ -88,7 +73,9 @@
                 </table>
             </div>
         </div>
-        <div class="mt-4">
+
+        <!-- Pagination -->
+        <div class="mt-6">
             <x-web-pagination :paginator="$levels" />
         </div>
     </div>

@@ -1,99 +1,72 @@
 @extends('layouts.admin')
 @section('content')
-    <div class="w-full">
-        <div class="flex items-center justify-between">
-            <h5 class="">Users</h5>
+    <div class="w-full space-y-6">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Users</h1>
+                <p class="mt-1 text-sm text-gray-500">Manage all registered users</p>
+            </div>
         </div>
-        <div class="bg-white">
-            <div class="overflow-x-auto mt-6 ">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+
+        <!-- Users Table Card -->
+        <div class="card">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                ID</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Email</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Phone</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Referall Code</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Level</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Deposit</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                From</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Action
-                            </th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Referral</th>
+                            <th>Level</th>
+                            <th>Deposit</th>
+                            <th>Joined</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200 " id="chatlist">
+                    <tbody>
                         @foreach ($users as $item)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->id }}
+                                <td class="font-medium text-gray-900">{{ $item->id }}</td>
+                                <td>
+                                    <div class="flex items-center space-x-2">
+                                        <div
+                                            class="flex-shrink-0 h-8 w-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-medium text-xs">
+                                            {{ strtoupper(substr($item->name, 0, 2)) }}
+                                        </div>
+                                        <span class="font-medium">{{ $item->name }}</span>
+                                    </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->name }}
+                                <td>{{ $item->email }}</td>
+                                <td>{{ $item->phone }}</td>
+                                <td class="font-mono text-xs">{{ $item->tag }}</td>
+                                <td>
+                                    <span class="badge badge-info">{{ $item->level->name }}</span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->email }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->phone }}
-                                </td>
-                                
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->tag }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->level->name }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->deposits()->sum('amount') }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->created_at }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $item->status}}
+                                <td class="font-semibold text-green-600">
+                                    \${{ number_format($item->deposits()->sum('amount'), 2) }}</td>
+                                <td class="text-xs text-gray-500">{{ $item->created_at->format('M d, Y') }}</td>
+                                <td>
+                                    @if ($item->status == 'active')
+                                        <span class="badge badge-success">Active</span>
+                                    @else
+                                        <span class="badge badge-danger">Inactive</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    <div class="flex space-x-3">
-
-                                        <a href="{{ route('admin.users.show', $item->id) }}">
-                                            <span class="bi bi-eye"></span>
+                                    <div class="flex items-center space-x-3">
+                                        <a href="{{ route('admin.users.show', $item->id) }}" title="View Details">
+                                            <i class="bi bi-eye action-icon"></i>
                                         </a>
-                                        <a href="{{ route('admin.users.wallet.index', $item->id) }}">
-                                            <span class="bi bi-bank"></span>
+                                        <a href="{{ route('admin.users.wallet.index', $item->id) }}" title="Wallet">
+                                            <i class="bi bi-wallet2 action-icon"></i>
                                         </a>
-                                        <a href="{{ route('admin.users.deposit.index', $item->id) }}">
-                                            <span class="bi bi-safe"></span>
+                                        <a href="{{ route('admin.users.deposit.index', $item->id) }}" title="Deposits">
+                                            <i class="bi bi-cash-stack action-icon"></i>
                                         </a>
-                                        {{-- <a href="{{ route('admin.offers.edit', $item->id) }}">
-                                            <span class="bi bi-pencil"></span>
-                                        </a>
-                                        <form action="{{ route('admin.offers.destroy', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit"><span class="bi bi-trash"></span></button>
-                                        </form> --}}
                                     </div>
                                 </td>
                             </tr>
@@ -102,7 +75,9 @@
                 </table>
             </div>
         </div>
-        <div class="mt-4">
+
+        <!-- Pagination -->
+        <div class="mt-6">
             <x-web-pagination :paginator="$users" />
         </div>
     </div>

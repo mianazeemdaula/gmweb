@@ -1,77 +1,71 @@
 @extends('layouts.admin')
 @section('content')
-    <div class="w-full">
-        <div class="flex items-center justify-between">
-            <h5 class="">Wallet</h5>
-            <a href="{{ url("admin/users-wallet-recalulate/$id") }}">
-                <div class="px-4 bg-green-700 text-white rounded-xl">
-                    Recalculate
-                </div>
+    <div class="w-full space-y-6">
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Wallet Transactions</h1>
+                <p class="mt-1 text-sm text-gray-500">View user wallet history</p>
+            </div>
+            <a href="{{ url("admin/users-wallet-recalulate/$id") }}" class="btn-primary">
+                <i class="bi bi-arrow-repeat mr-2"></i>
+                Recalculate Balance
             </a>
         </div>
-        <div class="bg-white">
-            <div class="overflow-x-auto mt-6 ">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+
+        <!-- Wallet Table Card -->
+        <div class="card">
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
                         <tr>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                ID</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Description</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Debit</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Credit</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Balance</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date</th>
-                                <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Active</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Action
-                            </th>
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                            <th>Balance</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200 " id="chatlist">
+                    <tbody>
                         @foreach ($wallet as $item)
                             <tr>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->id }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->description }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->debit }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->credit }}
-                                </td>
-                                
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->balance }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->updated_at }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-normal text-sm text-gray-500">
-                                    {{ $item->is_bonus ? 'Bonus' : '' }}
+                                <td class="font-medium text-gray-900">{{ $item->id }}</td>
+                                <td class="text-gray-700">{{ $item->description }}</td>
+                                <td>
+                                    @if ($item->debit > 0)
+                                        <span
+                                            class="font-semibold text-red-600">-\${{ number_format($item->debit, 2) }}</span>
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    <div class="flex space-x-3">
-                                        <a href="{{ route('admin.users.wallet.edit',[$item->user_id, $item->id]) }}">
-                                            <span class="bi bi-pencil"></span>
-                                        </a>
-                                    </div>
+                                    @if ($item->credit > 0)
+                                        <span
+                                            class="font-semibold text-green-600">+\${{ number_format($item->credit, 2) }}</span>
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
+                                </td>
+                                <td class="font-bold text-gray-900">\${{ number_format($item->balance, 2) }}</td>
+                                <td class="text-xs text-gray-500">
+                                    {{ $item->updated_at->format('M d, Y H:i') }}
+                                </td>
+                                <td>
+                                    @if ($item->is_bonus)
+                                        <span class="badge badge-warning">Bonus</span>
+                                    @else
+                                        <span class="badge badge-info">Regular</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.users.wallet.edit', [$item->user_id, $item->id]) }}"
+                                        title="Edit">
+                                        <i class="bi bi-pencil action-icon"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -79,7 +73,9 @@
                 </table>
             </div>
         </div>
-        <div class="mt-4">
+
+        <!-- Pagination -->
+        <div class="mt-6">
             <x-web-pagination :paginator="$wallet" />
         </div>
     </div>

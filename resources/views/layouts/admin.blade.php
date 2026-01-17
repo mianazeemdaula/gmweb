@@ -7,96 +7,115 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>Gold Minners</title>
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <title>Coin Exminning - Admin</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700' rel='stylesheet'>
     <style>
         body {
-            font-family: 'Poppins-Regular', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
     </style>
     @yield('header')
 </head>
 
-<body>
+<body class="bg-gray-50">
     @php
         $page = Route::currentRouteName();
     @endphp
+    <!-- Header -->
     <header class="header">
-        <div class="container">
-            <div class="flex flex-wrap h-16 items-center justify-between w-full bg-white">
-                <img src="{{ asset('/images/logo.jpg') }}" alt="" class="w-12">
-                <div class="flex items-center space-x-4">
-                    <a href='' class="relative">
-                        <i class="bi bi-bell"></i>
-                        <div class="absolute flex justify-center items-center h-3 w-3 top-0 right-0 rounded-full">
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75">
-                                <img src="{{ asset('/images/logo.jpg') }}" alt="" class="w-8">
-                            </span>
-                        </div>
-                    </a>
-                    <div
-                        class="flex justify-center items-center w-8 h-8 rounded-full ring-1 ring-green-500 ring-offset-2">
-                        <!-- <img src="{{ asset('/images/all-img/team/team-2.png') }}" alt="" class="w-6"> -->
-                        <i class="bi-person"></i>
-                    </div>
-                    <div class='md:hidden hover:cursor-pointer' onclick="toggleSidebar()">
-                        <i class="bi bi-list text-[32px]"></i>
-                    </div>
+        <div class="container mx-auto px-4">
+            <div class="flex h-16 items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <button class='lg:hidden hover:cursor-pointer text-gray-700 hover:text-gray-900 transition-colors'
+                        onclick="toggleSidebar()">
+                        <i class="bi bi-list text-[28px]"></i>
+                    </button>
+                    <img src="{{ asset('/images/logo.jpg') }}" alt="Logo" class="w-10 h-10 rounded-lg object-cover">
+                    <span class="hidden sm:block text-lg font-semibold text-gray-800">Admin Panel</span>
+                </div>
 
+                <!-- Right Menu -->
+                <div class="flex items-center space-x-4">
+                    <button class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+                        <i class="bi bi-bell text-xl text-gray-600"></i>
+                        <span class="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    <div
+                        class="flex justify-center items-center w-9 h-9 rounded-full bg-gradient-to-br from-green-400 to-green-600 text-white font-medium shadow-md">
+                        <i class="bi-person text-lg"></i>
+                    </div>
                 </div>
             </div>
         </div>
-
     </header>
 
+    <!-- Sidebar -->
     <aside aria-label="Sidebar" id='sidebar' class="sidebar">
-        <div class="absolute top-2 right-2 hover:cursor-pointer md:hidden text-slate-800" onclick="toggleSidebar()">
+        <!-- Mobile Close Button -->
+        <div class="absolute top-3 right-3 hover:cursor-pointer lg:hidden text-white z-50" onclick="toggleSidebar()">
             <i class="bi bi-x text-[32px]"></i>
         </div>
-        <div class="flex justify-center items-center bg-green-50 py-12 md:hidden">
-            <img src="{{ asset('/images/logo.jpg') }}" alt="" class="w-40">
+
+        <!-- Mobile Logo -->
+        <div class="flex justify-center items-center py-8 lg:hidden border-b border-green-700">
+            <img src="{{ asset('/images/logo.jpg') }}" alt="Logo" class="w-16 h-16 rounded-lg">
         </div>
-        <div class="mt-12 px-8">
-            <ul class="flex flex-col items-start space-y-4">
+
+        <!-- Navigation Menu -->
+        <nav class="mt-8 px-4">
+            <ul class="flex flex-col space-y-2">
                 <li @if ($page == 'home') class="active" @endif>
-                    <i class="bi-grid"></i>
-                    <a href="{{ url('dashboard/') }}">Home</a>
+                    <a href="{{ url('dashboard/') }}" class="nav-link">
+                        <i class="bi-grid text-lg"></i>
+                        <span>Dashboard</span>
+                    </a>
                 </li>
-                <li @if ($page == 'invoices') class="active" @endif>
-                    <i class="bi-person"></i>
-                    <a href="{{ route('admin.users.index') }}">Users</a>
+                <li @if (str_contains($page, 'admin.users')) class="active" @endif>
+                    <a href="{{ route('admin.users.index') }}" class="nav-link">
+                        <i class="bi-people text-lg"></i>
+                        <span>Users</span>
+                    </a>
                 </li>
-                <li @if ($page == 'invoices') class="active" @endif>
-                    <i class="bi-bar-chart"></i>
-                    <a href="{{ route('admin.levels.index') }}">Levels</a>
+                <li @if (str_contains($page, 'admin.levels')) class="active" @endif>
+                    <a href="{{ route('admin.levels.index') }}" class="nav-link">
+                        <i class="bi-bar-chart text-lg"></i>
+                        <span>Levels</span>
+                    </a>
                 </li>
-                <li @if ($page == 'invoices') class="active" @endif>
-                    <i class="bi-bank"></i>
-                    <a href="{{ route('admin.withdrawls.index') }}">Withdrawl</a>
+                <li @if (str_contains($page, 'admin.withdrawls')) class="active" @endif>
+                    <a href="{{ route('admin.withdrawls.index') }}" class="nav-link">
+                        <i class="bi-wallet2 text-lg"></i>
+                        <span>Withdrawals</span>
+                    </a>
                 </li>
-                <li @if ($page == 'invoices') class="active" @endif>
-                    <i class="bi-receipt"></i>
-                    <a href="{{ route('admin.offers.index') }}">Offers</a>
+                <li @if (str_contains($page, 'admin.offers')) class="active" @endif>
+                    <a href="{{ route('admin.offers.index') }}" class="nav-link">
+                        <i class="bi-gift text-lg"></i>
+                        <span>Offers</span>
+                    </a>
                 </li>
-                <li>
-                    <i class="bi-power"></i>
-                    <form action="{{ route('logout') }}" method="post">
+                <li class="pt-4 mt-4 border-t border-green-700">
+                    <form action="{{ route('logout') }}" method="post" class="w-full">
                         @csrf
-                        <button type="submit">Logout</button>
+                        <button type="submit" class="nav-link w-full text-left">
+                            <i class="bi-box-arrow-right text-lg"></i>
+                            <span>Logout</span>
+                        </button>
                     </form>
                 </li>
-
             </ul>
-        </div>
+        </nav>
     </aside>
-    <div class="responsive-body">
-        <div class="container px-6 py-2">
+    <!-- Main Content -->
+    <main class="responsive-body">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             @yield('content')
         </div>
-    </div>
+    </main>
+
     @yield('script')
+
     <script type="module">
         @if (Session::has('alert'))
             Swal.fire(
@@ -111,6 +130,17 @@
         function toggleSidebar() {
             $("#sidebar").toggleClass("mobile");
         }
+
+        // Close sidebar on outside click (mobile)
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const isClickInside = sidebar.contains(event.target) || event.target.closest(
+                '[onclick*="toggleSidebar"]');
+
+            if (!isClickInside && sidebar.classList.contains('mobile') && window.innerWidth < 1024) {
+                sidebar.classList.remove('mobile');
+            }
+        });
     </script>
 </body>
 
