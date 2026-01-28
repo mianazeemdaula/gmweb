@@ -51,7 +51,7 @@ class PaymentHooksController extends Controller
                         $deposit = new Deposit();
                         $deposit->user_id = $user->id;
                         $deposit->payment_method_id = strtolower($data['pay_currency']) == 'usdttrc20' ? 1 : 2;
-                        $deposit->amount = $data['actually_paid'] ??  $data['pay_amount'];
+                        $deposit->amount = $data['actually_paid_at_fiat'] ??  $data['pay_amount'];
                         $deposit->tx_id = $payment_id;
                         $deposit->status = 'completed';
                         $deposit->description = 'Deposit from Crypto';
